@@ -6,3 +6,14 @@ docs/**
 git_push.sh
 README.md
 .travis.yml
+
+model_browser_synthetic_monitor.go
+model_browser_synthetic_monitor_update.go
+model_http_synthetic_monitor.go
+model_http_synthetic_monitor_update.go
+model_private_synthetic_location.go
+api_synthetic_locations_nodes_and_configuration.go
+model_private_synthetic_location_update.go
+model_public_synthetic_location.go
+model_synthetic_public_location_update.go
+model_synthetic_public_location_update.go
