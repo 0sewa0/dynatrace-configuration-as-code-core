@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the Binding type satisfies the MappedNullable interface at compile time
@@ -24,6 +25,8 @@ type Binding struct {
 	// A list of user groups to which the policy applies.
 	Groups []string `json:"groups"`
 }
+
+type _Binding Binding
 
 // NewBinding instantiates a new Binding object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +108,42 @@ func (o Binding) ToMap() (map[string]interface{}, error) {
 	toSerialize["policyUuid"] = o.PolicyUuid
 	toSerialize["groups"] = o.Groups
 	return toSerialize, nil
+}
+
+func (o *Binding) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"policyUuid",
+		"groups",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBinding := _Binding{}
+
+	err = json.Unmarshal(bytes, &varBinding)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Binding(varBinding)
+
+	return err
 }
 
 type NullableBinding struct {

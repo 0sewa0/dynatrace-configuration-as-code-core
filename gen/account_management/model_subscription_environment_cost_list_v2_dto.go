@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriptionEnvironmentCostListV2Dto type satisfies the MappedNullable interface at compile time
@@ -19,11 +20,13 @@ var _ MappedNullable = &SubscriptionEnvironmentCostListV2Dto{}
 
 // SubscriptionEnvironmentCostListV2Dto struct for SubscriptionEnvironmentCostListV2Dto
 type SubscriptionEnvironmentCostListV2Dto struct {
-	// Subscription cost data
+	// Cost data of the subscription.
 	Data []SubscriptionEnvironmentCostV2Dto `json:"data"`
 	// The time the subscription data was last modified in `2021-05-01T15:11:00Z` format.
 	LastModifiedTime string `json:"lastModifiedTime"`
 }
+
+type _SubscriptionEnvironmentCostListV2Dto SubscriptionEnvironmentCostListV2Dto
 
 // NewSubscriptionEnvironmentCostListV2Dto instantiates a new SubscriptionEnvironmentCostListV2Dto object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +108,42 @@ func (o SubscriptionEnvironmentCostListV2Dto) ToMap() (map[string]interface{}, e
 	toSerialize["data"] = o.Data
 	toSerialize["lastModifiedTime"] = o.LastModifiedTime
 	return toSerialize, nil
+}
+
+func (o *SubscriptionEnvironmentCostListV2Dto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"data",
+		"lastModifiedTime",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionEnvironmentCostListV2Dto := _SubscriptionEnvironmentCostListV2Dto{}
+
+	err = json.Unmarshal(bytes, &varSubscriptionEnvironmentCostListV2Dto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionEnvironmentCostListV2Dto(varSubscriptionEnvironmentCostListV2Dto)
+
+	return err
 }
 
 type NullableSubscriptionEnvironmentCostListV2Dto struct {

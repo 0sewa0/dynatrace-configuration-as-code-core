@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the LevelPolicyBindingDto type satisfies the MappedNullable interface at compile time
@@ -25,6 +26,8 @@ type LevelPolicyBindingDto struct {
 	LevelId        string    `json:"levelId"`
 	PolicyBindings []Binding `json:"policyBindings"`
 }
+
+type _LevelPolicyBindingDto LevelPolicyBindingDto
 
 // NewLevelPolicyBindingDto instantiates a new LevelPolicyBindingDto object
 // This constructor will assign default values to properties that have it defined,
@@ -132,6 +135,43 @@ func (o LevelPolicyBindingDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["levelId"] = o.LevelId
 	toSerialize["policyBindings"] = o.PolicyBindings
 	return toSerialize, nil
+}
+
+func (o *LevelPolicyBindingDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"levelType",
+		"levelId",
+		"policyBindings",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varLevelPolicyBindingDto := _LevelPolicyBindingDto{}
+
+	err = json.Unmarshal(bytes, &varLevelPolicyBindingDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = LevelPolicyBindingDto(varLevelPolicyBindingDto)
+
+	return err
 }
 
 type NullableLevelPolicyBindingDto struct {

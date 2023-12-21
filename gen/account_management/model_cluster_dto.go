@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ClusterDto type satisfies the MappedNullable interface at compile time
@@ -22,6 +23,8 @@ type ClusterDto struct {
 	// The UUID of the cluster.
 	ClusterId string `json:"clusterId"`
 }
+
+type _ClusterDto ClusterDto
 
 // NewClusterDto instantiates a new ClusterDto object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +80,41 @@ func (o ClusterDto) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["clusterId"] = o.ClusterId
 	return toSerialize, nil
+}
+
+func (o *ClusterDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"clusterId",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varClusterDto := _ClusterDto{}
+
+	err = json.Unmarshal(bytes, &varClusterDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ClusterDto(varClusterDto)
+
+	return err
 }
 
 type NullableClusterDto struct {

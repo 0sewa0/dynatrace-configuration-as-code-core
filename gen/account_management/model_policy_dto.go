@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PolicyDto type satisfies the MappedNullable interface at compile time
@@ -26,6 +27,8 @@ type PolicyDto struct {
 	// A short description of the policy.
 	Description string `json:"description"`
 }
+
+type _PolicyDto PolicyDto
 
 // NewPolicyDto instantiates a new PolicyDto object
 // This constructor will assign default values to properties that have it defined,
@@ -133,6 +136,43 @@ func (o PolicyDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["description"] = o.Description
 	return toSerialize, nil
+}
+
+func (o *PolicyDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"uuid",
+		"name",
+		"description",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPolicyDto := _PolicyDto{}
+
+	err = json.Unmarshal(bytes, &varPolicyDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PolicyDto(varPolicyDto)
+
+	return err
 }
 
 type NullablePolicyDto struct {

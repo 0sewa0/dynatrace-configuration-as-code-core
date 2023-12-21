@@ -44,7 +44,7 @@ func (r ApiAddGroupPermissionsRequest) Execute() (*http.Response, error) {
 AddGroupPermissions Assigns permissions to a user group. Existing permissions remain unaffected.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param groupUuid The UUID of the required user group.
 	@return ApiAddGroupPermissionsRequest
 */
@@ -143,7 +143,7 @@ func (r ApiGetGroupPermissionsRequest) Execute() (*PermissionsGroupDto, *http.Re
 GetGroupPermissions Lists all permissions of a user group
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param groupUuid The UUID of the required user group.
 	@return ApiGetGroupPermissionsRequest
 */
@@ -256,7 +256,7 @@ func (r ApiOverwriteGroupPermissionsRequest) Execute() (*http.Response, error) {
 OverwriteGroupPermissions Sets permissions of a user group. Existing permissions are overwritten.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param groupUuid The UUID of the required user group.
 	@return ApiOverwriteGroupPermissionsRequest
 */
@@ -376,7 +376,7 @@ func (r ApiRemoveGroupPermissionsRequest) Execute() (*http.Response, error) {
 RemoveGroupPermissions Removes a permission from a user group
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param groupUuid The UUID of the required user group.
 	@return ApiRemoveGroupPermissionsRequest
 */

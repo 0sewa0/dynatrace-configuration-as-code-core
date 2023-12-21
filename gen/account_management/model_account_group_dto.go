@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the AccountGroupDto type satisfies the MappedNullable interface at compile time
@@ -36,6 +37,8 @@ type AccountGroupDto struct {
 	// The date and time of the most recent modification to the group in `2021-05-01T15:11:00Z` format.
 	UpdatedAt string `json:"updatedAt"`
 }
+
+type _AccountGroupDto AccountGroupDto
 
 // NewAccountGroupDto instantiates a new AccountGroupDto object
 // This constructor will assign default values to properties that have it defined,
@@ -273,6 +276,48 @@ func (o AccountGroupDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["updatedAt"] = o.UpdatedAt
 	return toSerialize, nil
+}
+
+func (o *AccountGroupDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"groupName",
+		"uuid",
+		"owner",
+		"accountUUID",
+		"accountName",
+		"description",
+		"createdAt",
+		"updatedAt",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAccountGroupDto := _AccountGroupDto{}
+
+	err = json.Unmarshal(bytes, &varAccountGroupDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = AccountGroupDto(varAccountGroupDto)
+
+	return err
 }
 
 type NullableAccountGroupDto struct {

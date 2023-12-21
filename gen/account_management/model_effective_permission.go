@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the EffectivePermission type satisfies the MappedNullable interface at compile time
@@ -24,6 +25,8 @@ type EffectivePermission struct {
 	// A list of policies.
 	Effects []EffectivePermissionEffects `json:"effects"`
 }
+
+type _EffectivePermission EffectivePermission
 
 // NewEffectivePermission instantiates a new EffectivePermission object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +108,42 @@ func (o EffectivePermission) ToMap() (map[string]interface{}, error) {
 	toSerialize["permission"] = o.Permission
 	toSerialize["effects"] = o.Effects
 	return toSerialize, nil
+}
+
+func (o *EffectivePermission) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"permission",
+		"effects",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varEffectivePermission := _EffectivePermission{}
+
+	err = json.Unmarshal(bytes, &varEffectivePermission)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EffectivePermission(varEffectivePermission)
+
+	return err
 }
 
 type NullableEffectivePermission struct {

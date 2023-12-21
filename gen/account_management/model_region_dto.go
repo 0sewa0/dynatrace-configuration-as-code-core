@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the RegionDto type satisfies the MappedNullable interface at compile time
@@ -22,6 +23,8 @@ type RegionDto struct {
 	// The name of the region.
 	Name string `json:"name"`
 }
+
+type _RegionDto RegionDto
 
 // NewRegionDto instantiates a new RegionDto object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +80,41 @@ func (o RegionDto) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["name"] = o.Name
 	return toSerialize, nil
+}
+
+func (o *RegionDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varRegionDto := _RegionDto{}
+
+	err = json.Unmarshal(bytes, &varRegionDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = RegionDto(varRegionDto)
+
+	return err
 }
 
 type NullableRegionDto struct {

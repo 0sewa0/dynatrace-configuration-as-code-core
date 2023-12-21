@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the PolicyOverviewDtoList type satisfies the MappedNullable interface at compile time
@@ -22,6 +23,8 @@ type PolicyOverviewDtoList struct {
 	// A list of policies.
 	PolicyOverviewList []PolicyOverview `json:"policyOverviewList"`
 }
+
+type _PolicyOverviewDtoList PolicyOverviewDtoList
 
 // NewPolicyOverviewDtoList instantiates a new PolicyOverviewDtoList object
 // This constructor will assign default values to properties that have it defined,
@@ -77,6 +80,41 @@ func (o PolicyOverviewDtoList) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["policyOverviewList"] = o.PolicyOverviewList
 	return toSerialize, nil
+}
+
+func (o *PolicyOverviewDtoList) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"policyOverviewList",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varPolicyOverviewDtoList := _PolicyOverviewDtoList{}
+
+	err = json.Unmarshal(bytes, &varPolicyOverviewDtoList)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PolicyOverviewDtoList(varPolicyOverviewDtoList)
+
+	return err
 }
 
 type NullablePolicyOverviewDtoList struct {

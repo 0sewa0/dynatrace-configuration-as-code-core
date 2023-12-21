@@ -45,7 +45,7 @@ func (r ApiAddUserToGroupsRequest) Execute() (*http.Response, error) {
 AddUserToGroups Adds a user to groups. Any existing group membership remains unaffected.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param email The email address of the required user.
 	@return ApiAddUserToGroupsRequest
 */
@@ -150,7 +150,7 @@ func (r ApiCreateUserForAccountRequest) Execute() (*http.Response, error) {
 CreateUserForAccount Creates a new user in an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiCreateUserForAccountRequest
 */
 func (a *UserManagementAPIService) CreateUserForAccount(ctx context.Context, accountUuid string) ApiCreateUserForAccountRequest {
@@ -246,7 +246,7 @@ func (r ApiGetUserGroupsRequest) Execute() (*GroupUserDto, *http.Response, error
 GetUserGroups Lists all groups of a user
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param email The email address of the required user.
 	@return ApiGetUserGroupsRequest
 */
@@ -358,7 +358,7 @@ func (r ApiGetUsersRequest) Execute() (*UserListDto, *http.Response, error) {
 GetUsers Lists all users of an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetUsersRequest
 */
 func (a *UserManagementAPIService) GetUsers(ctx context.Context, accountUuid string) ApiGetUsersRequest {
@@ -464,7 +464,7 @@ func (r ApiRemoveUserFromAccountRequest) Execute() (*http.Response, error) {
 RemoveUserFromAccount Removes a user from an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param email The email address of the required user.
 	@return ApiRemoveUserFromAccountRequest
 */
@@ -565,7 +565,7 @@ func (r ApiRemoveUserFromGroupsRequest) Execute() (*http.Response, error) {
 RemoveUserFromGroups Removes a user from groups
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param email The email address of the required user.
 	@return ApiRemoveUserFromGroupsRequest
 */
@@ -680,7 +680,7 @@ func (r ApiReplaceUserGroupsRequest) Execute() (*http.Response, error) {
 ReplaceUserGroups Sets group membership of a user. Any existing membership is overwritten.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param email The email address of the required user.
 	@return ApiReplaceUserGroupsRequest
 */

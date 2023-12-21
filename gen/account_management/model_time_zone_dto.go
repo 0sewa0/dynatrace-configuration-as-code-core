@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the TimeZoneDto type satisfies the MappedNullable interface at compile time
@@ -24,6 +25,8 @@ type TimeZoneDto struct {
 	// The standard name of the time zone.
 	Name string `json:"name"`
 }
+
+type _TimeZoneDto TimeZoneDto
 
 // NewTimeZoneDto instantiates a new TimeZoneDto object
 // This constructor will assign default values to properties that have it defined,
@@ -105,6 +108,42 @@ func (o TimeZoneDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["displayName"] = o.DisplayName
 	toSerialize["name"] = o.Name
 	return toSerialize, nil
+}
+
+func (o *TimeZoneDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"displayName",
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varTimeZoneDto := _TimeZoneDto{}
+
+	err = json.Unmarshal(bytes, &varTimeZoneDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = TimeZoneDto(varTimeZoneDto)
+
+	return err
 }
 
 type NullableTimeZoneDto struct {

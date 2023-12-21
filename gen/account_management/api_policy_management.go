@@ -1165,7 +1165,7 @@ func (r ApiGetEffectivePermissionsRequest) Execute() (*EffectivePermissions, *ht
 }
 
 /*
-GetEffectivePermissions Gets effective permissions for a user or group | maturity=EARLY_ADOPTER
+GetEffectivePermissions Gets effective permissions for a user or group
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param levelType The type of the [policy](https://dt-url.net/eu03uap) level. The following values are available:   * `account`: An account policy applies to all environments of an account.  * `environment`: An environment policy applies to a specific environment.    Each level inherits the policies of the higher level and extends them with its own policies.

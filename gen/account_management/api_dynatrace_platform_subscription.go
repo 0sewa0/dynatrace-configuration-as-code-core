@@ -35,23 +35,25 @@ type ApiGetEnvironmentCostRequest struct {
 	capabilityKeys   *[]string
 }
 
-// Date as ISO string
+// The start time of the query in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEnvironmentCostRequest) StartTime(startTime time.Time) ApiGetEnvironmentCostRequest {
 	r.startTime = &startTime
 	return r
 }
 
-// Date as ISO string
+// The end time of the query in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEnvironmentCostRequest) EndTime(endTime time.Time) ApiGetEnvironmentCostRequest {
 	r.endTime = &endTime
 	return r
 }
 
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
 func (r ApiGetEnvironmentCostRequest) EnvironmentIds(environmentIds []string) ApiGetEnvironmentCostRequest {
 	r.environmentIds = &environmentIds
 	return r
 }
 
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
 func (r ApiGetEnvironmentCostRequest) CapabilityKeys(capabilityKeys []string) ApiGetEnvironmentCostRequest {
 	r.capabilityKeys = &capabilityKeys
 	return r
@@ -62,11 +64,13 @@ func (r ApiGetEnvironmentCostRequest) Execute() (*SubscriptionEnvironmentCostLis
 }
 
 /*
-GetEnvironmentCost Get cost summary grouped by environment for a given subscription - SaaS only
+GetEnvironmentCost Gets cost data of a SaaS subscription by environment
+
+This enpoint is SaaS only.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required SaaS account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
-	@param subscriptionUuid The UUID of the requested subscription
+	@param accountUuid The ID of the required SaaS account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
 	@return ApiGetEnvironmentCostRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentCost(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetEnvironmentCostRequest {
@@ -186,6 +190,208 @@ func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentCostExecute(r Ap
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetEnvironmentCostV3Request struct {
+	ctx              context.Context
+	ApiService       *DynatracePlatformSubscriptionAPIService
+	accountUuid      string
+	subscriptionUuid string
+	startTime        *time.Time
+	endTime          *time.Time
+	environmentIds   *[]string
+	capabilityKeys   *[]string
+	clusterIds       *[]string
+	pageKey          *string
+	pageSize         *float32
+}
+
+// The start time of the queryin &#x60;2021-05-01T15:11:00Z&#x60; format.
+func (r ApiGetEnvironmentCostV3Request) StartTime(startTime time.Time) ApiGetEnvironmentCostV3Request {
+	r.startTime = &startTime
+	return r
+}
+
+// The end time of the queryin &#x60;2021-05-01T15:11:00Z&#x60; format.
+func (r ApiGetEnvironmentCostV3Request) EndTime(endTime time.Time) ApiGetEnvironmentCostV3Request {
+	r.endTime = &endTime
+	return r
+}
+
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
+func (r ApiGetEnvironmentCostV3Request) EnvironmentIds(environmentIds []string) ApiGetEnvironmentCostV3Request {
+	r.environmentIds = &environmentIds
+	return r
+}
+
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
+func (r ApiGetEnvironmentCostV3Request) CapabilityKeys(capabilityKeys []string) ApiGetEnvironmentCostV3Request {
+	r.capabilityKeys = &capabilityKeys
+	return r
+}
+
+// A list of Managed clusters for which you want to read the usage data.    Not applicable to SaaS environments.
+func (r ApiGetEnvironmentCostV3Request) ClusterIds(clusterIds []string) ApiGetEnvironmentCostV3Request {
+	r.clusterIds = &clusterIds
+	return r
+}
+
+// The cursor for the next page of results. You can find it in the **nextPageKey** field of the previous response.
+func (r ApiGetEnvironmentCostV3Request) PageKey(pageKey string) ApiGetEnvironmentCostV3Request {
+	r.pageKey = &pageKey
+	return r
+}
+
+// Defines the requested number of entries for the next page.
+func (r ApiGetEnvironmentCostV3Request) PageSize(pageSize float32) ApiGetEnvironmentCostV3Request {
+	r.pageSize = &pageSize
+	return r
+}
+
+func (r ApiGetEnvironmentCostV3Request) Execute() (*SubscriptionEnvironmentCostListV3Dto, *http.Response, error) {
+	return r.ApiService.GetEnvironmentCostV3Execute(r)
+}
+
+/*
+GetEnvironmentCostV3 Gets cost data of a subscription by environment
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
+	@return ApiGetEnvironmentCostV3Request
+*/
+func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentCostV3(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetEnvironmentCostV3Request {
+	return ApiGetEnvironmentCostV3Request{
+		ApiService:       a,
+		ctx:              ctx,
+		accountUuid:      accountUuid,
+		subscriptionUuid: subscriptionUuid,
+	}
+}
+
+// Execute executes the request
+//
+//	@return SubscriptionEnvironmentCostListV3Dto
+func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentCostV3Execute(r ApiGetEnvironmentCostV3Request) (*SubscriptionEnvironmentCostListV3Dto, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SubscriptionEnvironmentCostListV3Dto
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DynatracePlatformSubscriptionAPIService.GetEnvironmentCostV3")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/sub/v3/accounts/{accountUuid}/subscriptions/{subscriptionUuid}/environments/cost"
+	localVarPath = strings.Replace(localVarPath, "{"+"accountUuid"+"}", url.PathEscape(parameterValueToString(r.accountUuid, "accountUuid")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"subscriptionUuid"+"}", url.PathEscape(parameterValueToString(r.subscriptionUuid, "subscriptionUuid")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.startTime == nil {
+		return localVarReturnValue, nil, reportError("startTime is required and must be specified")
+	}
+	if r.endTime == nil {
+		return localVarReturnValue, nil, reportError("endTime is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "startTime", r.startTime, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "endTime", r.endTime, "")
+	if r.environmentIds != nil {
+		t := *r.environmentIds
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "environmentIds", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "environmentIds", t, "multi")
+		}
+	}
+	if r.capabilityKeys != nil {
+		t := *r.capabilityKeys
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "capabilityKeys", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "capabilityKeys", t, "multi")
+		}
+	}
+	if r.clusterIds != nil {
+		t := *r.clusterIds
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "clusterIds", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "clusterIds", t, "multi")
+		}
+	}
+	if r.pageKey != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page-key", r.pageKey, "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page-size", r.pageSize, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetEnvironmentUsageRequest struct {
 	ctx              context.Context
 	ApiService       *DynatracePlatformSubscriptionAPIService
@@ -197,23 +403,25 @@ type ApiGetEnvironmentUsageRequest struct {
 	capabilityKeys   *[]string
 }
 
-// Date as ISO string
+// The start of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEnvironmentUsageRequest) StartTime(startTime time.Time) ApiGetEnvironmentUsageRequest {
 	r.startTime = &startTime
 	return r
 }
 
-// Date as ISO string
+// The end of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEnvironmentUsageRequest) EndTime(endTime time.Time) ApiGetEnvironmentUsageRequest {
 	r.endTime = &endTime
 	return r
 }
 
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
 func (r ApiGetEnvironmentUsageRequest) EnvironmentIds(environmentIds []string) ApiGetEnvironmentUsageRequest {
 	r.environmentIds = &environmentIds
 	return r
 }
 
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
 func (r ApiGetEnvironmentUsageRequest) CapabilityKeys(capabilityKeys []string) ApiGetEnvironmentUsageRequest {
 	r.capabilityKeys = &capabilityKeys
 	return r
@@ -224,11 +432,13 @@ func (r ApiGetEnvironmentUsageRequest) Execute() (*SubscriptionEnvironmentUsageL
 }
 
 /*
-GetEnvironmentUsage Get usage summary grouped by environment for a given subscription - SaaS only
+GetEnvironmentUsage Gets the usage of a SaaS subscription per environment
+
+This enpoint is SaaS only.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required SaaS account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
-	@param subscriptionUuid The UUID of the requested subscription
+	@param accountUuid The ID of the required SaaS account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
 	@return ApiGetEnvironmentUsageRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentUsage(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetEnvironmentUsageRequest {
@@ -348,6 +558,208 @@ func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentUsageExecute(r A
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetEnvironmentUsageV3Request struct {
+	ctx              context.Context
+	ApiService       *DynatracePlatformSubscriptionAPIService
+	accountUuid      string
+	subscriptionUuid string
+	startTime        *time.Time
+	endTime          *time.Time
+	environmentIds   *[]string
+	capabilityKeys   *[]string
+	clusterIds       *[]string
+	pageKey          *string
+	pageSize         *float32
+}
+
+// The start of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
+func (r ApiGetEnvironmentUsageV3Request) StartTime(startTime time.Time) ApiGetEnvironmentUsageV3Request {
+	r.startTime = &startTime
+	return r
+}
+
+// The end of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
+func (r ApiGetEnvironmentUsageV3Request) EndTime(endTime time.Time) ApiGetEnvironmentUsageV3Request {
+	r.endTime = &endTime
+	return r
+}
+
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
+func (r ApiGetEnvironmentUsageV3Request) EnvironmentIds(environmentIds []string) ApiGetEnvironmentUsageV3Request {
+	r.environmentIds = &environmentIds
+	return r
+}
+
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
+func (r ApiGetEnvironmentUsageV3Request) CapabilityKeys(capabilityKeys []string) ApiGetEnvironmentUsageV3Request {
+	r.capabilityKeys = &capabilityKeys
+	return r
+}
+
+// A list of Managed clusters for which you want to read the usage data.    Not applicable to SaaS environments.
+func (r ApiGetEnvironmentUsageV3Request) ClusterIds(clusterIds []string) ApiGetEnvironmentUsageV3Request {
+	r.clusterIds = &clusterIds
+	return r
+}
+
+// The cursor for the next page of results. You can find it in the **nextPageKey** field of the previous response.
+func (r ApiGetEnvironmentUsageV3Request) PageKey(pageKey string) ApiGetEnvironmentUsageV3Request {
+	r.pageKey = &pageKey
+	return r
+}
+
+// Defines the requested number of entries for the next page.
+func (r ApiGetEnvironmentUsageV3Request) PageSize(pageSize float32) ApiGetEnvironmentUsageV3Request {
+	r.pageSize = &pageSize
+	return r
+}
+
+func (r ApiGetEnvironmentUsageV3Request) Execute() (*SubscriptionEnvironmentUsageListV3Dto, *http.Response, error) {
+	return r.ApiService.GetEnvironmentUsageV3Execute(r)
+}
+
+/*
+GetEnvironmentUsageV3 Gets usage data of a subsctiption by environment
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
+	@return ApiGetEnvironmentUsageV3Request
+*/
+func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentUsageV3(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetEnvironmentUsageV3Request {
+	return ApiGetEnvironmentUsageV3Request{
+		ApiService:       a,
+		ctx:              ctx,
+		accountUuid:      accountUuid,
+		subscriptionUuid: subscriptionUuid,
+	}
+}
+
+// Execute executes the request
+//
+//	@return SubscriptionEnvironmentUsageListV3Dto
+func (a *DynatracePlatformSubscriptionAPIService) GetEnvironmentUsageV3Execute(r ApiGetEnvironmentUsageV3Request) (*SubscriptionEnvironmentUsageListV3Dto, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *SubscriptionEnvironmentUsageListV3Dto
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DynatracePlatformSubscriptionAPIService.GetEnvironmentUsageV3")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/sub/v3/accounts/{accountUuid}/subscriptions/{subscriptionUuid}/environments/usage"
+	localVarPath = strings.Replace(localVarPath, "{"+"accountUuid"+"}", url.PathEscape(parameterValueToString(r.accountUuid, "accountUuid")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"subscriptionUuid"+"}", url.PathEscape(parameterValueToString(r.subscriptionUuid, "subscriptionUuid")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.startTime == nil {
+		return localVarReturnValue, nil, reportError("startTime is required and must be specified")
+	}
+	if r.endTime == nil {
+		return localVarReturnValue, nil, reportError("endTime is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "startTime", r.startTime, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "endTime", r.endTime, "")
+	if r.environmentIds != nil {
+		t := *r.environmentIds
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "environmentIds", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "environmentIds", t, "multi")
+		}
+	}
+	if r.capabilityKeys != nil {
+		t := *r.capabilityKeys
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "capabilityKeys", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "capabilityKeys", t, "multi")
+		}
+	}
+	if r.clusterIds != nil {
+		t := *r.clusterIds
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				parameterAddToHeaderOrQuery(localVarQueryParams, "clusterIds", s.Index(i).Interface(), "multi")
+			}
+		} else {
+			parameterAddToHeaderOrQuery(localVarQueryParams, "clusterIds", t, "multi")
+		}
+	}
+	if r.pageKey != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page-key", r.pageKey, "")
+	}
+	if r.pageSize != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page-size", r.pageSize, "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetEventsRequest struct {
 	ctx         context.Context
 	ApiService  *DynatracePlatformSubscriptionAPIService
@@ -357,18 +769,19 @@ type ApiGetEventsRequest struct {
 	eventType   *string
 }
 
-// Date as ISO string
+// The start of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEventsRequest) StartTime(startTime time.Time) ApiGetEventsRequest {
 	r.startTime = &startTime
 	return r
 }
 
-// Date as ISO string
+// The end of the requested timeframe in &#x60;2021-05-01T15:11:00Z&#x60; format.
 func (r ApiGetEventsRequest) EndTime(endTime time.Time) ApiGetEventsRequest {
 	r.endTime = &endTime
 	return r
 }
 
+// The type of the requested events: cost or forecast.    If not set, all events are returned.
 func (r ApiGetEventsRequest) EventType(eventType string) ApiGetEventsRequest {
 	r.eventType = &eventType
 	return r
@@ -379,10 +792,10 @@ func (r ApiGetEventsRequest) Execute() ([]Event, *http.Response, error) {
 }
 
 /*
-GetEvents Get all notification events for a given subscription
+GetEvents Lists all notifications for an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetEventsRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetEvents(ctx context.Context, accountUuid string) ApiGetEventsRequest {
@@ -490,10 +903,10 @@ func (r ApiGetForecastRequest) Execute() (*Forecast, *http.Response, error) {
 }
 
 /*
-GetForecast Get forecast snapshot for a given account
+GetForecast Gets a forecast of the subscription usage by the end of the annual commitment period
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetForecastRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetForecast(ctx context.Context, accountUuid string) ApiGetForecastRequest {
@@ -593,11 +1006,11 @@ func (r ApiGetSubscriptionRequest) Execute() (*SubscriptionDto, *http.Response, 
 }
 
 /*
-GetSubscription Get specific subscription by uuid
+GetSubscription Get a subscription
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
-	@param subscriptionUuid The UUID of the requested subscription
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
 	@return ApiGetSubscriptionRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetSubscription(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetSubscriptionRequest {
@@ -697,16 +1110,19 @@ type ApiGetTotalSubscriptionCostRequest struct {
 	clusterIds       *[]string
 }
 
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
 func (r ApiGetTotalSubscriptionCostRequest) EnvironmentIds(environmentIds []string) ApiGetTotalSubscriptionCostRequest {
 	r.environmentIds = &environmentIds
 	return r
 }
 
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
 func (r ApiGetTotalSubscriptionCostRequest) CapabilityKeys(capabilityKeys []string) ApiGetTotalSubscriptionCostRequest {
 	r.capabilityKeys = &capabilityKeys
 	return r
 }
 
+// A list of Managed clusters for which you want to read the usage data.    Not applicable to SaaS environments.
 func (r ApiGetTotalSubscriptionCostRequest) ClusterIds(clusterIds []string) ApiGetTotalSubscriptionCostRequest {
 	r.clusterIds = &clusterIds
 	return r
@@ -717,11 +1133,11 @@ func (r ApiGetTotalSubscriptionCostRequest) Execute() (*SubscriptionCostListDto,
 }
 
 /*
-GetTotalSubscriptionCost Get aggregated cost data grouped by date for a given subscription
+GetTotalSubscriptionCost Gets aggregated cost data of a subscription by date
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
-	@param subscriptionUuid The UUID of the requested subscription
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
 	@return ApiGetTotalSubscriptionCostRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetTotalSubscriptionCost(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetTotalSubscriptionCostRequest {
@@ -854,16 +1270,19 @@ type ApiGetTotalSubscriptionUsageRequest struct {
 	clusterIds       *[]string
 }
 
+// A list of environments for which you want to read the usage data. To specify several environments, separate them with a comma (&#x60;,&#x60;).
 func (r ApiGetTotalSubscriptionUsageRequest) EnvironmentIds(environmentIds []string) ApiGetTotalSubscriptionUsageRequest {
 	r.environmentIds = &environmentIds
 	return r
 }
 
+// A list of capabilities for which you want to read the usage data. To specify several capabilities, separate them with a comma (&#x60;,&#x60;).   To obtain capability keys, use the [GET subscriptions](https://dt-url.net/qd43uld) call and look for the **capabilities** field of the response.
 func (r ApiGetTotalSubscriptionUsageRequest) CapabilityKeys(capabilityKeys []string) ApiGetTotalSubscriptionUsageRequest {
 	r.capabilityKeys = &capabilityKeys
 	return r
 }
 
+// A list of Managed clusters for which you want to read the usage data.    Not applicable to SaaS environments.
 func (r ApiGetTotalSubscriptionUsageRequest) ClusterIds(clusterIds []string) ApiGetTotalSubscriptionUsageRequest {
 	r.clusterIds = &clusterIds
 	return r
@@ -874,11 +1293,11 @@ func (r ApiGetTotalSubscriptionUsageRequest) Execute() (*SubscriptionUsageListDt
 }
 
 /*
-GetTotalSubscriptionUsage Get aggregated usage data grouped by date for a given subscription
+GetTotalSubscriptionUsage Gets usage data of a subscription by date
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
-	@param subscriptionUuid The UUID of the requested subscription
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
+	@param subscriptionUuid The UUID of the requested subscription.   Fetch the list of subscriptions via the [GET all subscriptions](https://dt-url.net/jq03jvq) request.
 	@return ApiGetTotalSubscriptionUsageRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) GetTotalSubscriptionUsage(ctx context.Context, accountUuid string, subscriptionUuid string) ApiGetTotalSubscriptionUsageRequest {
@@ -1012,10 +1431,10 @@ func (r ApiListSubscriptionsRequest) Execute() (*SubscriptionListDto, *http.Resp
 }
 
 /*
-ListSubscriptions Get list of subscriptions by account uuid
+ListSubscriptions Lists all subscriptions of an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiListSubscriptionsRequest
 */
 func (a *DynatracePlatformSubscriptionAPIService) ListSubscriptions(ctx context.Context, accountUuid string) ApiListSubscriptionsRequest {

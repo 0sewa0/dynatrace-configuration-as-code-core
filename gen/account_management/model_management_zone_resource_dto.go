@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the ManagementZoneResourceDto type satisfies the MappedNullable interface at compile time
@@ -26,6 +27,8 @@ type ManagementZoneResourceDto struct {
 	// The ID of the management zone.
 	Id string `json:"id"`
 }
+
+type _ManagementZoneResourceDto ManagementZoneResourceDto
 
 // NewManagementZoneResourceDto instantiates a new ManagementZoneResourceDto object
 // This constructor will assign default values to properties that have it defined,
@@ -133,6 +136,43 @@ func (o ManagementZoneResourceDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["id"] = o.Id
 	return toSerialize, nil
+}
+
+func (o *ManagementZoneResourceDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"parent",
+		"name",
+		"id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varManagementZoneResourceDto := _ManagementZoneResourceDto{}
+
+	err = json.Unmarshal(bytes, &varManagementZoneResourceDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ManagementZoneResourceDto(varManagementZoneResourceDto)
+
+	return err
 }
 
 type NullableManagementZoneResourceDto struct {

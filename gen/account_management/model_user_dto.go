@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the UserDto type satisfies the MappedNullable interface at compile time
@@ -32,6 +33,8 @@ type UserDto struct {
 	// The user is (`true`) or is not (`false`) an emergency contact for the account.
 	EmergencyContact *bool `json:"emergencyContact,omitempty"`
 }
+
+type _UserDto UserDto
 
 // NewUserDto instantiates a new UserDto object
 // This constructor will assign default values to properties that have it defined,
@@ -253,6 +256,42 @@ func (o UserDto) ToMap() (map[string]interface{}, error) {
 		toSerialize["emergencyContact"] = o.EmergencyContact
 	}
 	return toSerialize, nil
+}
+
+func (o *UserDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"uid",
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUserDto := _UserDto{}
+
+	err = json.Unmarshal(bytes, &varUserDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UserDto(varUserDto)
+
+	return err
 }
 
 type NullableUserDto struct {

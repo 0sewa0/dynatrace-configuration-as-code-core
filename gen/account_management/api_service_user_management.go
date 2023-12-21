@@ -43,7 +43,7 @@ func (r ApiCreateServiceUserForAccountRequest) Execute() (*ServiceUserUuidDto, *
 CreateServiceUserForAccount Creates a new service user in an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiCreateServiceUserForAccountRequest
 */
 func (a *ServiceUserManagementAPIService) CreateServiceUserForAccount(ctx context.Context, accountUuid string) ApiCreateServiceUserForAccountRequest {
@@ -151,7 +151,7 @@ func (r ApiDeleteUserRequest) Execute() (*http.Response, error) {
 DeleteUser Removes service user
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@param userUuid The UUID of the required user.
 	@return ApiDeleteUserRequest
 */
@@ -244,7 +244,7 @@ func (r ApiGetServiceUsersFromAccountRequest) Execute() (*ExternalServiceUsersPa
 GetServiceUsersFromAccount Get service users assigned to account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetServiceUsersFromAccountRequest
 */
 func (a *ServiceUserManagementAPIService) GetServiceUsersFromAccount(ctx context.Context, accountUuid string) ApiGetServiceUsersFromAccountRequest {

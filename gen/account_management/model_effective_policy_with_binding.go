@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the EffectivePolicyWithBinding type satisfies the MappedNullable interface at compile time
@@ -22,6 +23,8 @@ type EffectivePolicyWithBinding struct {
 	Policy  EffectivePolicy  `json:"policy"`
 	Binding EffectiveBinding `json:"binding"`
 }
+
+type _EffectivePolicyWithBinding EffectivePolicyWithBinding
 
 // NewEffectivePolicyWithBinding instantiates a new EffectivePolicyWithBinding object
 // This constructor will assign default values to properties that have it defined,
@@ -103,6 +106,42 @@ func (o EffectivePolicyWithBinding) ToMap() (map[string]interface{}, error) {
 	toSerialize["policy"] = o.Policy
 	toSerialize["binding"] = o.Binding
 	return toSerialize, nil
+}
+
+func (o *EffectivePolicyWithBinding) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"policy",
+		"binding",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varEffectivePolicyWithBinding := _EffectivePolicyWithBinding{}
+
+	err = json.Unmarshal(bytes, &varEffectivePolicyWithBinding)
+
+	if err != nil {
+		return err
+	}
+
+	*o = EffectivePolicyWithBinding(varEffectivePolicyWithBinding)
+
+	return err
 }
 
 type NullableEffectivePolicyWithBinding struct {

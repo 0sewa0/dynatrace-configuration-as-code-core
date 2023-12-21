@@ -36,7 +36,7 @@ func (r ApiGetClustersRequest) Execute() (*ClusterListDto, *http.Response, error
 GetClusters Lists all clusters in a managed account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetClustersRequest
 */
 func (a *EnvironmentManagementAPIService) GetClusters(ctx context.Context, accountUuid string) ApiGetClustersRequest {
@@ -138,7 +138,7 @@ func (r ApiGetEnvironmentResourcesRequest) Execute() (*EnvironmentResourceDto, *
 GetEnvironmentResources Lists all environments and management zones of an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetEnvironmentResourcesRequest
 */
 func (a *EnvironmentManagementAPIService) GetEnvironmentResources(ctx context.Context, accountUuid string) ApiGetEnvironmentResourcesRequest {
@@ -240,7 +240,7 @@ func (r ApiGetEnvironmentsRequest) Execute() (*EnvironmentListDto, *http.Respons
 GetEnvironments Lists all environments in an account
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@param accountUuid The ID of the required account.    You can find the UUID on the **Account > Account management API** page, during creation of an OAuth client.
+	@param accountUuid The ID of the required account.    You can find the UUID on the **Account Management** > **Identity & access management** > **OAuth clients** page, during creation of an OAuth client.
 	@return ApiGetEnvironmentsRequest
 */
 func (a *EnvironmentManagementAPIService) GetEnvironments(ctx context.Context, accountUuid string) ApiGetEnvironmentsRequest {

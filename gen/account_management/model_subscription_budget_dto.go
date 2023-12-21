@@ -12,6 +12,7 @@ package accountmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // checks if the SubscriptionBudgetDto type satisfies the MappedNullable interface at compile time
@@ -19,13 +20,15 @@ var _ MappedNullable = &SubscriptionBudgetDto{}
 
 // SubscriptionBudgetDto struct for SubscriptionBudgetDto
 type SubscriptionBudgetDto struct {
-	// The total budget for the subscription
+	// The total budget of the subscription.
 	Total float32 `json:"total"`
-	// The total budget used for the subscription
+	// The used budget of the subscription.
 	Used float32 `json:"used"`
-	// The currency code for the subscription
+	// The currency of the subscription.
 	CurrencyCode string `json:"currencyCode"`
 }
+
+type _SubscriptionBudgetDto SubscriptionBudgetDto
 
 // NewSubscriptionBudgetDto instantiates a new SubscriptionBudgetDto object
 // This constructor will assign default values to properties that have it defined,
@@ -133,6 +136,43 @@ func (o SubscriptionBudgetDto) ToMap() (map[string]interface{}, error) {
 	toSerialize["used"] = o.Used
 	toSerialize["currencyCode"] = o.CurrencyCode
 	return toSerialize, nil
+}
+
+func (o *SubscriptionBudgetDto) UnmarshalJSON(bytes []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"total",
+		"used",
+		"currencyCode",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(bytes, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varSubscriptionBudgetDto := _SubscriptionBudgetDto{}
+
+	err = json.Unmarshal(bytes, &varSubscriptionBudgetDto)
+
+	if err != nil {
+		return err
+	}
+
+	*o = SubscriptionBudgetDto(varSubscriptionBudgetDto)
+
+	return err
 }
 
 type NullableSubscriptionBudgetDto struct {
