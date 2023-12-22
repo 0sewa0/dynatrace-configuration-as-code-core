@@ -12,6 +12,7 @@ api_one_agent_on_a_host.go
 api_problem.go
 api_rum_java_script_tag_management.go
 api_rum_user_sessions.go
+api_synthetic_locations_nodes_and_configuration.go
 api_synthetic_monitors.go
 api_synthetic_third_party.go
 api_threshold.go
@@ -51,6 +52,8 @@ model_application_from_relationships.go
 model_application_to_relationships.go
 model_bosh_release_available_versions.go
 model_bosh_release_checksum.go
+model_browser_synthetic_monitor.go
+model_browser_synthetic_monitor_update.go
 model_cluster_version.go
 model_connection_info.go
 model_constraint_violation.go
@@ -88,6 +91,8 @@ model_host_from_relationships.go
 model_host_group.go
 model_host_to_relationships.go
 model_hosts_list_page.go
+model_http_synthetic_monitor.go
+model_http_synthetic_monitor_update.go
 model_image_dto.go
 model_key_performance_metrics.go
 model_latest_lambda_layer_names.go
@@ -128,6 +133,8 @@ model_outage_handling_policy.go
 model_parsing_field_top_value.go
 model_plugin_info.go
 model_plugin_instance.go
+model_private_synthetic_location.go
+model_private_synthetic_location_update.go
 model_problem.go
 model_problem_affected_counts.go
 model_problem_close_result.go
@@ -147,6 +154,7 @@ model_process_group_instance_module.go
 model_process_group_instance_to_relationships.go
 model_process_group_metadata.go
 model_process_group_to_relationships.go
+model_public_synthetic_location.go
 model_push_event_attach_rules.go
 model_push_problem_comment.go
 model_request_dto.go
@@ -166,6 +174,7 @@ model_synthetic_monitor.go
 model_synthetic_monitor_error.go
 model_synthetic_monitor_step_result.go
 model_synthetic_monitor_update.go
+model_synthetic_public_location_update.go
 model_synthetic_public_locations_status.go
 model_synthetic_test_location.go
 model_synthetic_test_step.go

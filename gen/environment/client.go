@@ -74,6 +74,8 @@ type APIClient struct {
 
 	RUMUserSessionsAPI RUMUserSessionsAPI
 
+	SyntheticLocationsNodesAndConfigurationAPI SyntheticLocationsNodesAndConfigurationAPI
+
 	SyntheticMonitorsAPI SyntheticMonitorsAPI
 
 	SyntheticThirdPartyAPI SyntheticThirdPartyAPI
@@ -126,6 +128,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ProblemAPI = (*ProblemAPIService)(&c.common)
 	c.RUMJavaScriptTagManagementAPI = (*RUMJavaScriptTagManagementAPIService)(&c.common)
 	c.RUMUserSessionsAPI = (*RUMUserSessionsAPIService)(&c.common)
+	c.SyntheticLocationsNodesAndConfigurationAPI = (*SyntheticLocationsNodesAndConfigurationAPIService)(&c.common)
 	c.SyntheticMonitorsAPI = (*SyntheticMonitorsAPIService)(&c.common)
 	c.SyntheticThirdPartyAPI = (*SyntheticThirdPartyAPIService)(&c.common)
 	c.ThresholdAPI = (*ThresholdAPIService)(&c.common)

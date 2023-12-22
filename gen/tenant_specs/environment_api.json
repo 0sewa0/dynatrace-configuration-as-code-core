@@ -10018,7 +10018,6 @@
                 }
             },
             "BrowserSyntheticMonitor" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticMonitor"
                 }, {
@@ -10040,7 +10039,6 @@
                 "required" : [ "automaticallyAssignedApps", "createdFrom", "enabled", "entityId", "frequencyMin", "locations", "managementZones", "manuallyAssignedApps", "name", "script", "tags", "type" ]
             },
             "BrowserSyntheticMonitorUpdate" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticMonitorUpdate"
                 }, {
@@ -11712,7 +11710,6 @@
                 }
             },
             "HttpSyntheticMonitor" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticMonitor"
                 }, {
@@ -11731,7 +11728,6 @@
                 "required" : [ "automaticallyAssignedApps", "createdFrom", "enabled", "entityId", "frequencyMin", "locations", "managementZones", "manuallyAssignedApps", "name", "script", "tags", "type" ]
             },
             "HttpSyntheticMonitorUpdate" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticMonitorUpdate"
                 } ],
@@ -12685,7 +12681,6 @@
                 }
             },
             "PrivateSyntheticLocation" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticLocation"
                 }, {
@@ -12753,7 +12748,6 @@
                 "required" : [ "entityId", "latitude", "longitude", "name", "nodes", "type" ]
             },
             "PrivateSyntheticLocationUpdate" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticLocationUpdate"
                 }, {
@@ -14810,7 +14804,6 @@
                 }
             },
             "PublicSyntheticLocation" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticLocation"
                 }, {
@@ -15581,7 +15574,6 @@
                 "required" : [ "enabled", "frequencyMin", "locations", "manuallyAssignedApps", "name", "script", "tags", "type" ]
             },
             "SyntheticPublicLocationUpdate" : {
-                "type" : "object",
                 "allOf" : [ {
                     "$ref" : "#/components/schemas/SyntheticLocationUpdate"
                 }, {
