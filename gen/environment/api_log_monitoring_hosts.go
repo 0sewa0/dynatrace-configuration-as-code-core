@@ -19,12 +19,124 @@ import (
 	"strings"
 )
 
+type LogMonitoringHostsAPI interface {
+
+	/*
+		HostLogJobDelete Deletes or cancels the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param hostId The Dynatrace entity ID of the required host.
+		@param jobId The ID of the log analysis job to be deleted.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/52k3r7f) request.
+		@return ApiHostLogJobDeleteRequest
+	*/
+	HostLogJobDelete(ctx context.Context, hostId string, jobId string) ApiHostLogJobDeleteRequest
+
+	// HostLogJobDeleteExecute executes the request
+	//  @return LogJobDeleteResult
+	HostLogJobDeleteExecute(r ApiHostLogJobDeleteRequest) (*LogJobDeleteResult, *http.Response, error)
+
+	/*
+			HostLogJobRecords Gets the full content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/mkc3rss) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param hostId The Dynatrace entity ID of the required host.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/52k3r7f) request.
+			@return ApiHostLogJobRecordsRequest
+	*/
+	HostLogJobRecords(ctx context.Context, hostId string, jobId string) ApiHostLogJobRecordsRequest
+
+	// HostLogJobRecordsExecute executes the request
+	//  @return LogJobRecordsResult
+	HostLogJobRecordsExecute(r ApiHostLogJobRecordsRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+			HostLogJobRecordsFiltered Gets the filtered content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/mkc3rss) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param hostId The Dynatrace entity ID of the required host.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/52k3r7f) request.
+			@return ApiHostLogJobRecordsFilteredRequest
+	*/
+	HostLogJobRecordsFiltered(ctx context.Context, hostId string, jobId string) ApiHostLogJobRecordsFilteredRequest
+
+	// HostLogJobRecordsFilteredExecute executes the request
+	//  @return LogJobRecordsResult
+	HostLogJobRecordsFilteredExecute(r ApiHostLogJobRecordsFilteredRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+		HostLogJobRecordsTop Gets the top values of fields present in the content of the analyzed log
+
+		Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/mkc3rss) request.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param hostId The Dynatrace entity ID of the required host.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/52k3r7f) request.
+		@return ApiHostLogJobRecordsTopRequest
+	*/
+	HostLogJobRecordsTop(ctx context.Context, hostId string, jobId string) ApiHostLogJobRecordsTopRequest
+
+	// HostLogJobRecordsTopExecute executes the request
+	//  @return LogJobRecordsTopValuesRestResult
+	HostLogJobRecordsTopExecute(r ApiHostLogJobRecordsTopRequest) (*LogJobRecordsTopValuesRestResult, *http.Response, error)
+
+	/*
+		HostLogJobStart Starts the analysis job for the specified OS log
+
+		The response returns the ID of the job.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param hostId The Dynatrace entity ID of the required host.
+		@param logPath The full pathname of the log.
+		@return ApiHostLogJobStartRequest
+	*/
+	HostLogJobStart(ctx context.Context, hostId string, logPath string) ApiHostLogJobStartRequest
+
+	// HostLogJobStartExecute executes the request
+	//  @return string
+	HostLogJobStartExecute(r ApiHostLogJobStartRequest) (string, *http.Response, error)
+
+	/*
+		HostLogJobStatus Gets status of the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param hostId The Dynatrace entity ID of the required host.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/52k3r7f) request.
+		@return ApiHostLogJobStatusRequest
+	*/
+	HostLogJobStatus(ctx context.Context, hostId string, jobId string) ApiHostLogJobStatusRequest
+
+	// HostLogJobStatusExecute executes the request
+	//  @return LogJobStatusResult
+	HostLogJobStatusExecute(r ApiHostLogJobStatusRequest) (*LogJobStatusResult, *http.Response, error)
+
+	/*
+		HostLogList Lists all the available OS logs on the specified host
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param hostId The Dynatrace entity ID of the required host.
+		@return ApiHostLogListRequest
+	*/
+	HostLogList(ctx context.Context, hostId string) ApiHostLogListRequest
+
+	// HostLogListExecute executes the request
+	//  @return LogList4hostResult
+	HostLogListExecute(r ApiHostLogListRequest) (*LogList4hostResult, *http.Response, error)
+}
+
 // LogMonitoringHostsAPIService LogMonitoringHostsAPI service
 type LogMonitoringHostsAPIService service
 
 type ApiHostLogJobDeleteRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringHostsAPIService
+	ApiService LogMonitoringHostsAPI
 	hostId     string
 	jobId      string
 }
@@ -187,7 +299,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobDeleteExecute(r ApiHostLogJobDe
 
 type ApiHostLogJobRecordsRequest struct {
 	ctx         context.Context
-	ApiService  *LogMonitoringHostsAPIService
+	ApiService  LogMonitoringHostsAPI
 	hostId      string
 	jobId       string
 	scrollToken *string
@@ -363,7 +475,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobRecordsExecute(r ApiHostLogJobR
 
 type ApiHostLogJobRecordsFilteredRequest struct {
 	ctx              context.Context
-	ApiService       *LogMonitoringHostsAPIService
+	ApiService       LogMonitoringHostsAPI
 	hostId           string
 	jobId            string
 	scrollToken      *string
@@ -548,7 +660,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobRecordsFilteredExecute(r ApiHos
 
 type ApiHostLogJobRecordsTopRequest struct {
 	ctx                 context.Context
-	ApiService          *LogMonitoringHostsAPIService
+	ApiService          LogMonitoringHostsAPI
 	hostId              string
 	jobId               string
 	filterTopLogRecords *FilterTopLogRecords
@@ -711,7 +823,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobRecordsTopExecute(r ApiHostLogJ
 
 type ApiHostLogJobStartRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringHostsAPIService
+	ApiService     LogMonitoringHostsAPI
 	hostId         string
 	logPath        string
 	query          *string
@@ -915,7 +1027,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobStartExecute(r ApiHostLogJobSta
 
 type ApiHostLogJobStatusRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringHostsAPIService
+	ApiService LogMonitoringHostsAPI
 	hostId     string
 	jobId      string
 }
@@ -1067,7 +1179,7 @@ func (a *LogMonitoringHostsAPIService) HostLogJobStatusExecute(r ApiHostLogJobSt
 
 type ApiHostLogListRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringHostsAPIService
+	ApiService LogMonitoringHostsAPI
 	hostId     string
 }
 

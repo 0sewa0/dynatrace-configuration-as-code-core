@@ -20,12 +20,52 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeProcessAPI interface {
+
+	/*
+			GetProcesses Lists all monitored processes along with their parameters
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		You can additionally limit the output by using pagination:
+		1. Specify the number of results per page in the **pageSize** query parameter.
+		2. Then use the URL-encoded cursor from the **Next-Page-Key** response header in the **nextPageKey** query parameter to obtain subsequent pages.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetProcessesRequest
+
+			Deprecated
+	*/
+	GetProcesses(ctx context.Context) ApiGetProcessesRequest
+
+	// GetProcessesExecute executes the request
+	//  @return []ProcessGroupInstance
+	// Deprecated
+	GetProcessesExecute(r ApiGetProcessesRequest) ([]ProcessGroupInstance, *http.Response, error)
+
+	/*
+		GetSingleProcess List properties of the specified process
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required process.
+		@return ApiGetSingleProcessRequest
+
+		Deprecated
+	*/
+	GetSingleProcess(ctx context.Context, meIdentifier string) ApiGetSingleProcessRequest
+
+	// GetSingleProcessExecute executes the request
+	//  @return ProcessGroupInstance
+	// Deprecated
+	GetSingleProcessExecute(r ApiGetSingleProcessRequest) (*ProcessGroupInstance, *http.Response, error)
+}
+
 // TopologySmartscapeProcessAPIService TopologySmartscapeProcessAPI service
 type TopologySmartscapeProcessAPIService service
 
 type ApiGetProcessesRequest struct {
 	ctx                     context.Context
-	ApiService              *TopologySmartscapeProcessAPIService
+	ApiService              TopologySmartscapeProcessAPI
 	startTimestamp          *int64
 	endTimestamp            *int64
 	relativeTime            *string
@@ -344,7 +384,7 @@ func (a *TopologySmartscapeProcessAPIService) GetProcessesExecute(r ApiGetProces
 
 type ApiGetSingleProcessRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeProcessAPIService
+	ApiService   TopologySmartscapeProcessAPI
 	meIdentifier string
 }
 

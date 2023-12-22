@@ -20,12 +20,83 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeApplicationAPI interface {
+
+	/*
+			GetApplications Gets the list of all applications in your environment along with their parameters
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		You can additionally limit the output by using pagination:
+		1. Specify the number of results per page in the **pageSize** query parameter.
+		2. Then use the URL-encoded cursor from the **Next-Page-Key** response header in the **nextPageKey** query parameter to obtain subsequent pages.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetApplicationsRequest
+
+			Deprecated
+	*/
+	GetApplications(ctx context.Context) ApiGetApplicationsRequest
+
+	// GetApplicationsExecute executes the request
+	//  @return []Application
+	// Deprecated
+	GetApplicationsExecute(r ApiGetApplicationsRequest) ([]Application, *http.Response, error)
+
+	/*
+		GetBaselineValuesForSingleApplication Gets baseline data for the specified application | maturity=EARLY_ADOPTER
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required application.
+		@return ApiGetBaselineValuesForSingleApplicationRequest
+
+		Deprecated
+	*/
+	GetBaselineValuesForSingleApplication(ctx context.Context, meIdentifier string) ApiGetBaselineValuesForSingleApplicationRequest
+
+	// GetBaselineValuesForSingleApplicationExecute executes the request
+	//  @return ApplicationBaselineValues
+	// Deprecated
+	GetBaselineValuesForSingleApplicationExecute(r ApiGetBaselineValuesForSingleApplicationRequest) (*ApplicationBaselineValues, *http.Response, error)
+
+	/*
+		GetSingleApplication Gets parameters of the specified application
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required application.
+		@return ApiGetSingleApplicationRequest
+
+		Deprecated
+	*/
+	GetSingleApplication(ctx context.Context, meIdentifier string) ApiGetSingleApplicationRequest
+
+	// GetSingleApplicationExecute executes the request
+	//  @return Application
+	// Deprecated
+	GetSingleApplicationExecute(r ApiGetSingleApplicationRequest) (*Application, *http.Response, error)
+
+	/*
+		UpdateApplication Updates parameters of the specified application
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the application you want to update.
+		@return ApiUpdateApplicationRequest
+
+		Deprecated
+	*/
+	UpdateApplication(ctx context.Context, meIdentifier string) ApiUpdateApplicationRequest
+
+	// UpdateApplicationExecute executes the request
+	// Deprecated
+	UpdateApplicationExecute(r ApiUpdateApplicationRequest) (*http.Response, error)
+}
+
 // TopologySmartscapeApplicationAPIService TopologySmartscapeApplicationAPI service
 type TopologySmartscapeApplicationAPIService service
 
 type ApiGetApplicationsRequest struct {
 	ctx            context.Context
-	ApiService     *TopologySmartscapeApplicationAPIService
+	ApiService     TopologySmartscapeApplicationAPI
 	startTimestamp *int64
 	endTimestamp   *int64
 	relativeTime   *string
@@ -288,7 +359,7 @@ func (a *TopologySmartscapeApplicationAPIService) GetApplicationsExecute(r ApiGe
 
 type ApiGetBaselineValuesForSingleApplicationRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeApplicationAPIService
+	ApiService   TopologySmartscapeApplicationAPI
 	meIdentifier string
 }
 
@@ -429,7 +500,7 @@ func (a *TopologySmartscapeApplicationAPIService) GetBaselineValuesForSingleAppl
 
 type ApiGetSingleApplicationRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeApplicationAPIService
+	ApiService   TopologySmartscapeApplicationAPI
 	meIdentifier string
 }
 
@@ -570,7 +641,7 @@ func (a *TopologySmartscapeApplicationAPIService) GetSingleApplicationExecute(r 
 
 type ApiUpdateApplicationRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeApplicationAPIService
+	ApiService   TopologySmartscapeApplicationAPI
 	meIdentifier string
 	updateEntity *UpdateEntity
 }

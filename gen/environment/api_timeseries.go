@@ -20,12 +20,90 @@ import (
 	"strings"
 )
 
+type TimeseriesAPI interface {
+
+	/*
+		CreateCustomTimeseries Creates a new custom metric
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param timeseriesIdentifier The ID for the new metric. It must start with the `custom:` prefix.   You can use alphanumeric characters and the following punctuation marks: periods (`.`), hyphens (`-`), and commas (`,`). A number cannot follow a punctuation mark.   If you use the ID of an existing metric the respective parameters will be updated.   The length of ID is limited to **256 characters**.
+		@return ApiCreateCustomTimeseriesRequest
+	*/
+	CreateCustomTimeseries(ctx context.Context, timeseriesIdentifier string) ApiCreateCustomTimeseriesRequest
+
+	// CreateCustomTimeseriesExecute executes the request
+	//  @return TimeseriesDefinition
+	CreateCustomTimeseriesExecute(r ApiCreateCustomTimeseriesRequest) (*TimeseriesDefinition, *http.Response, error)
+
+	/*
+		DeleteCustomTimeseries Deletes the specified custom metric
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param timeseriesIdentifier The ID of the metric to delete.
+		@return ApiDeleteCustomTimeseriesRequest
+	*/
+	DeleteCustomTimeseries(ctx context.Context, timeseriesIdentifier string) ApiDeleteCustomTimeseriesRequest
+
+	// DeleteCustomTimeseriesExecute executes the request
+	DeleteCustomTimeseriesExecute(r ApiDeleteCustomTimeseriesRequest) (*http.Response, error)
+
+	/*
+		GetAllTimeseriesDefinitions Lists all metric definitions, with the parameters of each metric
+
+		You can specify filtering parameters to return only matched metrics. If no parameters are specified, the call will list all the defined metrics.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAllTimeseriesDefinitionsRequest
+	*/
+	GetAllTimeseriesDefinitions(ctx context.Context) ApiGetAllTimeseriesDefinitionsRequest
+
+	// GetAllTimeseriesDefinitionsExecute executes the request
+	//  @return []TimeseriesDefinition
+	GetAllTimeseriesDefinitionsExecute(r ApiGetAllTimeseriesDefinitionsRequest) ([]TimeseriesDefinition, *http.Response, error)
+
+	/*
+		ReadTimeseriesComplex Lists all available metric data points, matching the specified parameters
+
+		Provides advanced filtering possibilities, comparing to the `GET /timeseries/{metricIdentifier}` request.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param timeseriesIdentifier The case-sensitive ID of the timeseries from which you want to read parameters and data points.
+		@return ApiReadTimeseriesComplexRequest
+	*/
+	ReadTimeseriesComplex(ctx context.Context, timeseriesIdentifier string) ApiReadTimeseriesComplexRequest
+
+	// ReadTimeseriesComplexExecute executes the request
+	//  @return TimeseriesQueryResultWrapper
+	ReadTimeseriesComplexExecute(r ApiReadTimeseriesComplexRequest) (*TimeseriesQueryResultWrapper, *http.Response, error)
+
+	/*
+			ReadTimeseriesData Gets the parameters of the specified metric and, optionally, its data points
+
+			To obtain data points, set **includeData** to `true`.
+
+		You can obtain either data points or the scalar result of the specified timeseries, depending on the **queryMode**.
+
+		To obtain data points, you must specify the timeframe, either as **relativeTime** or as a combination of **startTimestamp** and **endTimestamp**.
+
+		You must also provide the **aggregationType**, supported by the metric.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param timeseriesIdentifier The case-sensitive ID of the timeseries, from which you want to read parameters and data points.
+			@return ApiReadTimeseriesDataRequest
+	*/
+	ReadTimeseriesData(ctx context.Context, timeseriesIdentifier string) ApiReadTimeseriesDataRequest
+
+	// ReadTimeseriesDataExecute executes the request
+	//  @return TimeseriesQueryResult
+	ReadTimeseriesDataExecute(r ApiReadTimeseriesDataRequest) (*TimeseriesQueryResult, *http.Response, error)
+}
+
 // TimeseriesAPIService TimeseriesAPI service
 type TimeseriesAPIService service
 
 type ApiCreateCustomTimeseriesRequest struct {
 	ctx                           context.Context
-	ApiService                    *TimeseriesAPIService
+	ApiService                    TimeseriesAPI
 	timeseriesIdentifier          string
 	timeseriesRegistrationMessage *TimeseriesRegistrationMessage
 }
@@ -171,7 +249,7 @@ func (a *TimeseriesAPIService) CreateCustomTimeseriesExecute(r ApiCreateCustomTi
 
 type ApiDeleteCustomTimeseriesRequest struct {
 	ctx                  context.Context
-	ApiService           *TimeseriesAPIService
+	ApiService           TimeseriesAPI
 	timeseriesIdentifier string
 }
 
@@ -296,7 +374,7 @@ func (a *TimeseriesAPIService) DeleteCustomTimeseriesExecute(r ApiDeleteCustomTi
 
 type ApiGetAllTimeseriesDefinitionsRequest struct {
 	ctx            context.Context
-	ApiService     *TimeseriesAPIService
+	ApiService     TimeseriesAPI
 	source         *string
 	detailedSource *string
 }
@@ -451,7 +529,7 @@ func (a *TimeseriesAPIService) GetAllTimeseriesDefinitionsExecute(r ApiGetAllTim
 
 type ApiReadTimeseriesComplexRequest struct {
 	ctx                    context.Context
-	ApiService             *TimeseriesAPIService
+	ApiService             TimeseriesAPI
 	timeseriesIdentifier   string
 	timeseriesQueryMessage *TimeseriesQueryMessage
 }
@@ -599,7 +677,7 @@ func (a *TimeseriesAPIService) ReadTimeseriesComplexExecute(r ApiReadTimeseriesC
 
 type ApiReadTimeseriesDataRequest struct {
 	ctx                                       context.Context
-	ApiService                                *TimeseriesAPIService
+	ApiService                                TimeseriesAPI
 	timeseriesIdentifier                      string
 	includeData                               *bool
 	aggregationType                           *string

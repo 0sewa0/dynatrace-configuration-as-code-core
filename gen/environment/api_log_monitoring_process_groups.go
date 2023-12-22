@@ -19,12 +19,122 @@ import (
 	"strings"
 )
 
+type LogMonitoringProcessGroupsAPI interface {
+
+	/*
+		ProcessGroupLogJobDelete Deletes or cancels the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param pgId The Dynatrace entity ID of the required process group.
+		@param jobId The ID of the log analysis job to be deleted.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/c2m3rxl) request.
+		@return ApiProcessGroupLogJobDeleteRequest
+	*/
+	ProcessGroupLogJobDelete(ctx context.Context, pgId string, jobId string) ApiProcessGroupLogJobDeleteRequest
+
+	// ProcessGroupLogJobDeleteExecute executes the request
+	//  @return LogJobDeleteResult
+	ProcessGroupLogJobDeleteExecute(r ApiProcessGroupLogJobDeleteRequest) (*LogJobDeleteResult, *http.Response, error)
+
+	/*
+			ProcessGroupLogJobRecords Gets the content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/wve3r83) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param pgId The Dynatrace entity ID of the required process group.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/c2m3rxl) request.
+			@return ApiProcessGroupLogJobRecordsRequest
+	*/
+	ProcessGroupLogJobRecords(ctx context.Context, pgId string, jobId string) ApiProcessGroupLogJobRecordsRequest
+
+	// ProcessGroupLogJobRecordsExecute executes the request
+	//  @return LogJobRecordsResult
+	ProcessGroupLogJobRecordsExecute(r ApiProcessGroupLogJobRecordsRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+			ProcessGroupLogJobRecordsFiltered Gets the content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/wve3r83) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param pgId The Dynatrace entity ID of the required process group.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/c2m3rxl) request.
+			@return ApiProcessGroupLogJobRecordsFilteredRequest
+	*/
+	ProcessGroupLogJobRecordsFiltered(ctx context.Context, pgId string, jobId string) ApiProcessGroupLogJobRecordsFilteredRequest
+
+	// ProcessGroupLogJobRecordsFilteredExecute executes the request
+	//  @return LogJobRecordsResult
+	ProcessGroupLogJobRecordsFilteredExecute(r ApiProcessGroupLogJobRecordsFilteredRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+		ProcessGroupLogJobRecordsTop Gets the top values of fields present in the content of the analyzed log
+
+		Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/usg3rbv) request.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param pgId The Dynatrace entity ID of the required process group.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/c2m3rxl) request.
+		@return ApiProcessGroupLogJobRecordsTopRequest
+	*/
+	ProcessGroupLogJobRecordsTop(ctx context.Context, pgId string, jobId string) ApiProcessGroupLogJobRecordsTopRequest
+
+	// ProcessGroupLogJobRecordsTopExecute executes the request
+	//  @return LogJobRecordsTopValuesRestResult
+	ProcessGroupLogJobRecordsTopExecute(r ApiProcessGroupLogJobRecordsTopRequest) (*LogJobRecordsTopValuesRestResult, *http.Response, error)
+
+	/*
+		ProcessGroupLogJobStart Starts analysis job for the specified process group log
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param pgId The Dynatrace entity ID of the required process group.
+		@param logPath The full pathname of the log.
+		@return ApiProcessGroupLogJobStartRequest
+	*/
+	ProcessGroupLogJobStart(ctx context.Context, pgId string, logPath string) ApiProcessGroupLogJobStartRequest
+
+	// ProcessGroupLogJobStartExecute executes the request
+	//  @return string
+	ProcessGroupLogJobStartExecute(r ApiProcessGroupLogJobStartRequest) (string, *http.Response, error)
+
+	/*
+		ProcessGroupLogJobStatus Gets status of the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param pgId The Dynatrace entity ID of the required process group.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/c2m3rxl) request.
+		@return ApiProcessGroupLogJobStatusRequest
+	*/
+	ProcessGroupLogJobStatus(ctx context.Context, pgId string, jobId string) ApiProcessGroupLogJobStatusRequest
+
+	// ProcessGroupLogJobStatusExecute executes the request
+	//  @return LogJobStatusResult
+	ProcessGroupLogJobStatusExecute(r ApiProcessGroupLogJobStatusRequest) (*LogJobStatusResult, *http.Response, error)
+
+	/*
+		ProcessGroupLogList Lists all the available logs of the specified process group
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param pgId The entity ID of the process group.
+		@return ApiProcessGroupLogListRequest
+	*/
+	ProcessGroupLogList(ctx context.Context, pgId string) ApiProcessGroupLogListRequest
+
+	// ProcessGroupLogListExecute executes the request
+	//  @return LogList4pgResult
+	ProcessGroupLogListExecute(r ApiProcessGroupLogListRequest) (*LogList4pgResult, *http.Response, error)
+}
+
 // LogMonitoringProcessGroupsAPIService LogMonitoringProcessGroupsAPI service
 type LogMonitoringProcessGroupsAPIService service
 
 type ApiProcessGroupLogJobDeleteRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringProcessGroupsAPIService
+	ApiService LogMonitoringProcessGroupsAPI
 	pgId       string
 	jobId      string
 }
@@ -187,7 +297,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobDeleteExecute(r
 
 type ApiProcessGroupLogJobRecordsRequest struct {
 	ctx         context.Context
-	ApiService  *LogMonitoringProcessGroupsAPIService
+	ApiService  LogMonitoringProcessGroupsAPI
 	pgId        string
 	jobId       string
 	scrollToken *string
@@ -363,7 +473,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobRecordsExecute(
 
 type ApiProcessGroupLogJobRecordsFilteredRequest struct {
 	ctx              context.Context
-	ApiService       *LogMonitoringProcessGroupsAPIService
+	ApiService       LogMonitoringProcessGroupsAPI
 	pgId             string
 	jobId            string
 	scrollToken      *string
@@ -548,7 +658,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobRecordsFiltered
 
 type ApiProcessGroupLogJobRecordsTopRequest struct {
 	ctx                 context.Context
-	ApiService          *LogMonitoringProcessGroupsAPIService
+	ApiService          LogMonitoringProcessGroupsAPI
 	pgId                string
 	jobId               string
 	filterTopLogRecords *FilterTopLogRecords
@@ -711,7 +821,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobRecordsTopExecu
 
 type ApiProcessGroupLogJobStartRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringProcessGroupsAPIService
+	ApiService     LogMonitoringProcessGroupsAPI
 	pgId           string
 	logPath        string
 	hostFilter     *string
@@ -923,7 +1033,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobStartExecute(r 
 
 type ApiProcessGroupLogJobStatusRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringProcessGroupsAPIService
+	ApiService LogMonitoringProcessGroupsAPI
 	pgId       string
 	jobId      string
 }
@@ -1075,7 +1185,7 @@ func (a *LogMonitoringProcessGroupsAPIService) ProcessGroupLogJobStatusExecute(r
 
 type ApiProcessGroupLogListRequest struct {
 	ctx        context.Context
-	ApiService *LogMonitoringProcessGroupsAPIService
+	ApiService LogMonitoringProcessGroupsAPI
 	pgId       string
 }
 

@@ -19,12 +19,61 @@ import (
 	"strings"
 )
 
+type ThresholdAPI interface {
+
+	/*
+		CreateCustomThreshold Creates or updates an existing threshold for a plugin or a custom event
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param thresholdId The ID of the threshold to create or update.
+		@return ApiCreateCustomThresholdRequest
+
+		Deprecated
+	*/
+	CreateCustomThreshold(ctx context.Context, thresholdId string) ApiCreateCustomThresholdRequest
+
+	// CreateCustomThresholdExecute executes the request
+	//  @return Threshold
+	// Deprecated
+	CreateCustomThresholdExecute(r ApiCreateCustomThresholdRequest) (*Threshold, *http.Response, error)
+
+	/*
+		DeleteCustomThreshold Deletes the specified threshold
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param thresholdId The ID of the threshold to delete.
+		@return ApiDeleteCustomThresholdRequest
+
+		Deprecated
+	*/
+	DeleteCustomThreshold(ctx context.Context, thresholdId string) ApiDeleteCustomThresholdRequest
+
+	// DeleteCustomThresholdExecute executes the request
+	// Deprecated
+	DeleteCustomThresholdExecute(r ApiDeleteCustomThresholdRequest) (*http.Response, error)
+
+	/*
+		ReadCustomThresholds Gets all configured thresholds for plugins and custom events in your environment
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiReadCustomThresholdsRequest
+
+		Deprecated
+	*/
+	ReadCustomThresholds(ctx context.Context) ApiReadCustomThresholdsRequest
+
+	// ReadCustomThresholdsExecute executes the request
+	//  @return []Threshold
+	// Deprecated
+	ReadCustomThresholdsExecute(r ApiReadCustomThresholdsRequest) ([]Threshold, *http.Response, error)
+}
+
 // ThresholdAPIService ThresholdAPI service
 type ThresholdAPIService service
 
 type ApiCreateCustomThresholdRequest struct {
 	ctx                          context.Context
-	ApiService                   *ThresholdAPIService
+	ApiService                   ThresholdAPI
 	thresholdId                  string
 	thresholdRegistrationMessage *ThresholdRegistrationMessage
 }
@@ -174,7 +223,7 @@ func (a *ThresholdAPIService) CreateCustomThresholdExecute(r ApiCreateCustomThre
 
 type ApiDeleteCustomThresholdRequest struct {
 	ctx         context.Context
-	ApiService  *ThresholdAPIService
+	ApiService  ThresholdAPI
 	thresholdId string
 }
 
@@ -302,7 +351,7 @@ func (a *ThresholdAPIService) DeleteCustomThresholdExecute(r ApiDeleteCustomThre
 
 type ApiReadCustomThresholdsRequest struct {
 	ctx        context.Context
-	ApiService *ThresholdAPIService
+	ApiService ThresholdAPI
 	filter     *string
 }
 

@@ -20,12 +20,78 @@ import (
 	"strings"
 )
 
+type SyntheticMonitorsAPI interface {
+
+	/*
+		AddMonitor Creates a new synthetic monitor
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiAddMonitorRequest
+	*/
+	AddMonitor(ctx context.Context) ApiAddMonitorRequest
+
+	// AddMonitorExecute executes the request
+	//  @return EntityIdDto
+	AddMonitorExecute(r ApiAddMonitorRequest) (*EntityIdDto, *http.Response, error)
+
+	/*
+		DeleteMonitor Deletes the specified synthetic monitor
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param monitorId The ID of the synthetic monitor to be deleted.
+		@return ApiDeleteMonitorRequest
+	*/
+	DeleteMonitor(ctx context.Context, monitorId string) ApiDeleteMonitorRequest
+
+	// DeleteMonitorExecute executes the request
+	DeleteMonitorExecute(r ApiDeleteMonitorRequest) (*http.Response, error)
+
+	/*
+		GetMonitor Gets parameters of the specified synthetic monitor
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param monitorId The ID of the required synthetic monitor
+		@return ApiGetMonitorRequest
+	*/
+	GetMonitor(ctx context.Context, monitorId string) ApiGetMonitorRequest
+
+	// GetMonitorExecute executes the request
+	//  @return SyntheticMonitor
+	GetMonitorExecute(r ApiGetMonitorRequest) (*SyntheticMonitor, *http.Response, error)
+
+	/*
+		GetMonitorsCollection Lists all synthetic monitors in your Dynatrace environment
+
+		The full list can be lengthy, but you can narrow it down by specifying filter query parameters.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetMonitorsCollectionRequest
+	*/
+	GetMonitorsCollection(ctx context.Context) ApiGetMonitorsCollectionRequest
+
+	// GetMonitorsCollectionExecute executes the request
+	//  @return Monitors
+	GetMonitorsCollectionExecute(r ApiGetMonitorsCollectionRequest) (*Monitors, *http.Response, error)
+
+	/*
+		ReplaceMonitor Updates parameters of the specified synthetic monitor
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param monitorId The ID of the synthetic monitor to be updated.
+		@return ApiReplaceMonitorRequest
+	*/
+	ReplaceMonitor(ctx context.Context, monitorId string) ApiReplaceMonitorRequest
+
+	// ReplaceMonitorExecute executes the request
+	ReplaceMonitorExecute(r ApiReplaceMonitorRequest) (*http.Response, error)
+}
+
 // SyntheticMonitorsAPIService SyntheticMonitorsAPI service
 type SyntheticMonitorsAPIService service
 
 type ApiAddMonitorRequest struct {
 	ctx                    context.Context
-	ApiService             *SyntheticMonitorsAPIService
+	ApiService             SyntheticMonitorsAPI
 	syntheticMonitorUpdate *SyntheticMonitorUpdate
 }
 
@@ -167,7 +233,7 @@ func (a *SyntheticMonitorsAPIService) AddMonitorExecute(r ApiAddMonitorRequest) 
 
 type ApiDeleteMonitorRequest struct {
 	ctx        context.Context
-	ApiService *SyntheticMonitorsAPIService
+	ApiService SyntheticMonitorsAPI
 	monitorId  string
 }
 
@@ -292,7 +358,7 @@ func (a *SyntheticMonitorsAPIService) DeleteMonitorExecute(r ApiDeleteMonitorReq
 
 type ApiGetMonitorRequest struct {
 	ctx        context.Context
-	ApiService *SyntheticMonitorsAPIService
+	ApiService SyntheticMonitorsAPI
 	monitorId  string
 }
 
@@ -429,7 +495,7 @@ func (a *SyntheticMonitorsAPIService) GetMonitorExecute(r ApiGetMonitorRequest) 
 
 type ApiGetMonitorsCollectionRequest struct {
 	ctx             context.Context
-	ApiService      *SyntheticMonitorsAPIService
+	ApiService      SyntheticMonitorsAPI
 	managementZone  *int64
 	tag             *[]string
 	location        *string
@@ -660,7 +726,7 @@ func (a *SyntheticMonitorsAPIService) GetMonitorsCollectionExecute(r ApiGetMonit
 
 type ApiReplaceMonitorRequest struct {
 	ctx                    context.Context
-	ApiService             *SyntheticMonitorsAPIService
+	ApiService             SyntheticMonitorsAPI
 	monitorId              string
 	syntheticMonitorUpdate *SyntheticMonitorUpdate
 }

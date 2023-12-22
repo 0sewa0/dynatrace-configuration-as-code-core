@@ -48,53 +48,53 @@ type APIClient struct {
 
 	// API Services
 
-	AnonymizationAPI *AnonymizationAPIService
+	AnonymizationAPI AnonymizationAPI
 
-	ClusterTimeAPI *ClusterTimeAPIService
+	ClusterTimeAPI ClusterTimeAPI
 
-	ClusterVersionAPI *ClusterVersionAPIService
+	ClusterVersionAPI ClusterVersionAPI
 
-	DeploymentAPI *DeploymentAPIService
+	DeploymentAPI DeploymentAPI
 
-	EventsAPI *EventsAPIService
+	EventsAPI EventsAPI
 
-	LogMonitoringCustomDevicesAPI *LogMonitoringCustomDevicesAPIService
+	LogMonitoringCustomDevicesAPI LogMonitoringCustomDevicesAPI
 
-	LogMonitoringHostsAPI *LogMonitoringHostsAPIService
+	LogMonitoringHostsAPI LogMonitoringHostsAPI
 
-	LogMonitoringProcessGroupsAPI *LogMonitoringProcessGroupsAPIService
+	LogMonitoringProcessGroupsAPI LogMonitoringProcessGroupsAPI
 
-	MaintenanceWindowAPI *MaintenanceWindowAPIService
+	MaintenanceWindowAPI MaintenanceWindowAPI
 
-	OneAgentOnAHostAPI *OneAgentOnAHostAPIService
+	OneAgentOnAHostAPI OneAgentOnAHostAPI
 
-	ProblemAPI *ProblemAPIService
+	ProblemAPI ProblemAPI
 
-	RUMJavaScriptTagManagementAPI *RUMJavaScriptTagManagementAPIService
+	RUMJavaScriptTagManagementAPI RUMJavaScriptTagManagementAPI
 
-	RUMUserSessionsAPI *RUMUserSessionsAPIService
+	RUMUserSessionsAPI RUMUserSessionsAPI
 
-	SyntheticMonitorsAPI *SyntheticMonitorsAPIService
+	SyntheticMonitorsAPI SyntheticMonitorsAPI
 
-	SyntheticThirdPartyAPI *SyntheticThirdPartyAPIService
+	SyntheticThirdPartyAPI SyntheticThirdPartyAPI
 
-	ThresholdAPI *ThresholdAPIService
+	ThresholdAPI ThresholdAPI
 
-	TimeseriesAPI *TimeseriesAPIService
+	TimeseriesAPI TimeseriesAPI
 
-	TokensAPI *TokensAPIService
+	TokensAPI TokensAPI
 
-	TopologySmartscapeApplicationAPI *TopologySmartscapeApplicationAPIService
+	TopologySmartscapeApplicationAPI TopologySmartscapeApplicationAPI
 
-	TopologySmartscapeCustomDeviceAPI *TopologySmartscapeCustomDeviceAPIService
+	TopologySmartscapeCustomDeviceAPI TopologySmartscapeCustomDeviceAPI
 
-	TopologySmartscapeHostAPI *TopologySmartscapeHostAPIService
+	TopologySmartscapeHostAPI TopologySmartscapeHostAPI
 
-	TopologySmartscapeProcessAPI *TopologySmartscapeProcessAPIService
+	TopologySmartscapeProcessAPI TopologySmartscapeProcessAPI
 
-	TopologySmartscapeProcessGroupAPI *TopologySmartscapeProcessGroupAPIService
+	TopologySmartscapeProcessGroupAPI TopologySmartscapeProcessGroupAPI
 
-	TopologySmartscapeServiceAPI *TopologySmartscapeServiceAPIService
+	TopologySmartscapeServiceAPI TopologySmartscapeServiceAPI
 }
 
 type service struct {

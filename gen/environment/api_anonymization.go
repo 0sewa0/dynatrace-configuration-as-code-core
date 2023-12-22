@@ -20,12 +20,46 @@ import (
 	"strings"
 )
 
+type AnonymizationAPI interface {
+
+	/*
+			Anonymize Creates user session anonymization job
+
+			The job anonymizes all user sessions in the specified timeframe by masking the specified fields.
+
+		To identify user sessions to be anonymized you can specify either userID, or IP address, or both. If you specify both the **OR** logic applies.
+
+		You can't undo the anonymization.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiAnonymizeRequest
+	*/
+	Anonymize(ctx context.Context) ApiAnonymizeRequest
+
+	// AnonymizeExecute executes the request
+	//  @return AnonymizationIdResult
+	AnonymizeExecute(r ApiAnonymizeRequest) (*AnonymizationIdResult, *http.Response, error)
+
+	/*
+		GetStatus Shows the progress of the specified anonymization job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param requestId The ID of the required anonymization job.
+		@return ApiGetStatusRequest
+	*/
+	GetStatus(ctx context.Context, requestId string) ApiGetStatusRequest
+
+	// GetStatusExecute executes the request
+	//  @return AnonymizationProgressResult
+	GetStatusExecute(r ApiGetStatusRequest) (*AnonymizationProgressResult, *http.Response, error)
+}
+
 // AnonymizationAPIService AnonymizationAPI service
 type AnonymizationAPIService service
 
 type ApiAnonymizeRequest struct {
 	ctx             context.Context
-	ApiService      *AnonymizationAPIService
+	ApiService      AnonymizationAPI
 	startTimestamp  *int64
 	endTimestamp    *int64
 	userIds         *[]string
@@ -244,7 +278,7 @@ func (a *AnonymizationAPIService) AnonymizeExecute(r ApiAnonymizeRequest) (*Anon
 
 type ApiGetStatusRequest struct {
 	ctx        context.Context
-	ApiService *AnonymizationAPIService
+	ApiService AnonymizationAPI
 	requestId  string
 }
 

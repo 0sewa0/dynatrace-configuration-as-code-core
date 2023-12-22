@@ -20,12 +20,83 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeServiceAPI interface {
+
+	/*
+		GetBaselineValuesForSingleService Gets baseline data for the specified service | maturity=EARLY_ADOPTER
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required service.
+		@return ApiGetBaselineValuesForSingleServiceRequest
+
+		Deprecated
+	*/
+	GetBaselineValuesForSingleService(ctx context.Context, meIdentifier string) ApiGetBaselineValuesForSingleServiceRequest
+
+	// GetBaselineValuesForSingleServiceExecute executes the request
+	//  @return ServiceBaselineValues
+	// Deprecated
+	GetBaselineValuesForSingleServiceExecute(r ApiGetBaselineValuesForSingleServiceRequest) (*ServiceBaselineValues, *http.Response, error)
+
+	/*
+			GetServices Lists all available services in your environment
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		You can additionally limit the output by using pagination:
+		1. Specify the number of results per page in the **pageSize** query parameter.
+		2. Then use the URL-encoded cursor from the **Next-Page-Key** response header in the **nextPageKey** query parameter to obtain subsequent pages.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetServicesRequest
+
+			Deprecated
+	*/
+	GetServices(ctx context.Context) ApiGetServicesRequest
+
+	// GetServicesExecute executes the request
+	//  @return []Service
+	// Deprecated
+	GetServicesExecute(r ApiGetServicesRequest) ([]Service, *http.Response, error)
+
+	/*
+		GetSingleService Gets parameters of the specified service
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required service.
+		@return ApiGetSingleServiceRequest
+
+		Deprecated
+	*/
+	GetSingleService(ctx context.Context, meIdentifier string) ApiGetSingleServiceRequest
+
+	// GetSingleServiceExecute executes the request
+	//  @return Service
+	// Deprecated
+	GetSingleServiceExecute(r ApiGetSingleServiceRequest) (*Service, *http.Response, error)
+
+	/*
+		UpdateService Updates parameters of the specified service
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the service you're inquiring.
+		@return ApiUpdateServiceRequest
+
+		Deprecated
+	*/
+	UpdateService(ctx context.Context, meIdentifier string) ApiUpdateServiceRequest
+
+	// UpdateServiceExecute executes the request
+	// Deprecated
+	UpdateServiceExecute(r ApiUpdateServiceRequest) (*http.Response, error)
+}
+
 // TopologySmartscapeServiceAPIService TopologySmartscapeServiceAPI service
 type TopologySmartscapeServiceAPIService service
 
 type ApiGetBaselineValuesForSingleServiceRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeServiceAPIService
+	ApiService   TopologySmartscapeServiceAPI
 	meIdentifier string
 }
 
@@ -166,7 +237,7 @@ func (a *TopologySmartscapeServiceAPIService) GetBaselineValuesForSingleServiceE
 
 type ApiGetServicesRequest struct {
 	ctx            context.Context
-	ApiService     *TopologySmartscapeServiceAPIService
+	ApiService     TopologySmartscapeServiceAPI
 	startTimestamp *int64
 	endTimestamp   *int64
 	relativeTime   *string
@@ -429,7 +500,7 @@ func (a *TopologySmartscapeServiceAPIService) GetServicesExecute(r ApiGetService
 
 type ApiGetSingleServiceRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeServiceAPIService
+	ApiService   TopologySmartscapeServiceAPI
 	meIdentifier string
 }
 
@@ -570,7 +641,7 @@ func (a *TopologySmartscapeServiceAPIService) GetSingleServiceExecute(r ApiGetSi
 
 type ApiUpdateServiceRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeServiceAPIService
+	ApiService   TopologySmartscapeServiceAPI
 	meIdentifier string
 	updateEntity *UpdateEntity
 }

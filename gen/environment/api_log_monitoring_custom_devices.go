@@ -19,12 +19,124 @@ import (
 	"strings"
 )
 
+type LogMonitoringCustomDevicesAPI interface {
+
+	/*
+		CustomDeviceLogJobDelete Deletes or cancels the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The Dynatrace entity ID of the required custom device.
+		@param jobId The ID of the log analysis job to be deleted.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/kzi3rb8) request.
+		@return ApiCustomDeviceLogJobDeleteRequest
+	*/
+	CustomDeviceLogJobDelete(ctx context.Context, customDeviceId string, jobId string) ApiCustomDeviceLogJobDeleteRequest
+
+	// CustomDeviceLogJobDeleteExecute executes the request
+	//  @return LogJobDeleteResult
+	CustomDeviceLogJobDeleteExecute(r ApiCustomDeviceLogJobDeleteRequest) (*LogJobDeleteResult, *http.Response, error)
+
+	/*
+			CustomDeviceLogJobRecords Gets the content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/usg3rbv) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param customDeviceId The Dynatrace entity ID of the required custom device.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/kzi3rb8) request.
+			@return ApiCustomDeviceLogJobRecordsRequest
+	*/
+	CustomDeviceLogJobRecords(ctx context.Context, customDeviceId string, jobId string) ApiCustomDeviceLogJobRecordsRequest
+
+	// CustomDeviceLogJobRecordsExecute executes the request
+	//  @return LogJobRecordsResult
+	CustomDeviceLogJobRecordsExecute(r ApiCustomDeviceLogJobRecordsRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+			CustomDeviceLogJobRecordsFiltered Gets the filtered content of the analyzed log
+
+			Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/usg3rbv) request.
+
+		Long results split into several pages. By default, a page contains 100 results. You can change this value with the **pageSize** query parameter, up to 10,000.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param customDeviceId The Dynatrace entity ID of the required custom device.
+			@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/kzi3rb8) request.
+			@return ApiCustomDeviceLogJobRecordsFilteredRequest
+	*/
+	CustomDeviceLogJobRecordsFiltered(ctx context.Context, customDeviceId string, jobId string) ApiCustomDeviceLogJobRecordsFilteredRequest
+
+	// CustomDeviceLogJobRecordsFilteredExecute executes the request
+	//  @return LogJobRecordsResult
+	CustomDeviceLogJobRecordsFilteredExecute(r ApiCustomDeviceLogJobRecordsFilteredRequest) (*LogJobRecordsResult, *http.Response, error)
+
+	/*
+		CustomDeviceLogJobRecordsTop Gets the top values of fields present in the content of the analyzed log
+
+		Results are available only when the status of the analysis job for this log is `READY`. To check the job status, use the [GET analysis job status](https://dt-url.net/usg3rbv) request.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The Dynatrace entity ID of the required custom device.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/kzi3rb8) request.
+		@return ApiCustomDeviceLogJobRecordsTopRequest
+	*/
+	CustomDeviceLogJobRecordsTop(ctx context.Context, customDeviceId string, jobId string) ApiCustomDeviceLogJobRecordsTopRequest
+
+	// CustomDeviceLogJobRecordsTopExecute executes the request
+	//  @return LogJobRecordsTopValuesRestResult
+	CustomDeviceLogJobRecordsTopExecute(r ApiCustomDeviceLogJobRecordsTopRequest) (*LogJobRecordsTopValuesRestResult, *http.Response, error)
+
+	/*
+		CustomDeviceLogJobStart Starts the analysis job for the specified custom device log
+
+		The response returns the ID of the job.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The Dynatrace entity ID of the required custom device.
+		@param logPath The full pathname of the log.
+		@return ApiCustomDeviceLogJobStartRequest
+	*/
+	CustomDeviceLogJobStart(ctx context.Context, customDeviceId string, logPath string) ApiCustomDeviceLogJobStartRequest
+
+	// CustomDeviceLogJobStartExecute executes the request
+	//  @return string
+	CustomDeviceLogJobStartExecute(r ApiCustomDeviceLogJobStartRequest) (string, *http.Response, error)
+
+	/*
+		CustomDeviceLogJobStatus Gets status of the specified log analysis job
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The Dynatrace entity ID of the required custom device.
+		@param jobId The ID of the required log analysis job.    You can retrieve it from the response of the [POST analysis job](https://dt-url.net/kzi3rb8) request.
+		@return ApiCustomDeviceLogJobStatusRequest
+	*/
+	CustomDeviceLogJobStatus(ctx context.Context, customDeviceId string, jobId string) ApiCustomDeviceLogJobStatusRequest
+
+	// CustomDeviceLogJobStatusExecute executes the request
+	//  @return LogJobStatusResult
+	CustomDeviceLogJobStatusExecute(r ApiCustomDeviceLogJobStatusRequest) (*LogJobStatusResult, *http.Response, error)
+
+	/*
+		CustomDeviceLogList Lists all the available logs on the specified custom device
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The Dynatrace entity ID of the required custom device.
+		@return ApiCustomDeviceLogListRequest
+	*/
+	CustomDeviceLogList(ctx context.Context, customDeviceId string) ApiCustomDeviceLogListRequest
+
+	// CustomDeviceLogListExecute executes the request
+	//  @return LogListForCustomDeviceResult
+	CustomDeviceLogListExecute(r ApiCustomDeviceLogListRequest) (*LogListForCustomDeviceResult, *http.Response, error)
+}
+
 // LogMonitoringCustomDevicesAPIService LogMonitoringCustomDevicesAPI service
 type LogMonitoringCustomDevicesAPIService service
 
 type ApiCustomDeviceLogJobDeleteRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringCustomDevicesAPIService
+	ApiService     LogMonitoringCustomDevicesAPI
 	customDeviceId string
 	jobId          string
 }
@@ -187,7 +299,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobDeleteExecute(r
 
 type ApiCustomDeviceLogJobRecordsRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringCustomDevicesAPIService
+	ApiService     LogMonitoringCustomDevicesAPI
 	customDeviceId string
 	jobId          string
 	scrollToken    *string
@@ -363,7 +475,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobRecordsExecute(
 
 type ApiCustomDeviceLogJobRecordsFilteredRequest struct {
 	ctx              context.Context
-	ApiService       *LogMonitoringCustomDevicesAPIService
+	ApiService       LogMonitoringCustomDevicesAPI
 	customDeviceId   string
 	jobId            string
 	scrollToken      *string
@@ -548,7 +660,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobRecordsFiltered
 
 type ApiCustomDeviceLogJobRecordsTopRequest struct {
 	ctx                 context.Context
-	ApiService          *LogMonitoringCustomDevicesAPIService
+	ApiService          LogMonitoringCustomDevicesAPI
 	customDeviceId      string
 	jobId               string
 	filterTopLogRecords *FilterTopLogRecords
@@ -711,7 +823,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobRecordsTopExecu
 
 type ApiCustomDeviceLogJobStartRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringCustomDevicesAPIService
+	ApiService     LogMonitoringCustomDevicesAPI
 	customDeviceId string
 	logPath        string
 	query          *string
@@ -915,7 +1027,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobStartExecute(r 
 
 type ApiCustomDeviceLogJobStatusRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringCustomDevicesAPIService
+	ApiService     LogMonitoringCustomDevicesAPI
 	customDeviceId string
 	jobId          string
 }
@@ -1067,7 +1179,7 @@ func (a *LogMonitoringCustomDevicesAPIService) CustomDeviceLogJobStatusExecute(r
 
 type ApiCustomDeviceLogListRequest struct {
 	ctx            context.Context
-	ApiService     *LogMonitoringCustomDevicesAPIService
+	ApiService     LogMonitoringCustomDevicesAPI
 	customDeviceId string
 }
 

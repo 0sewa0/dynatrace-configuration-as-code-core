@@ -20,12 +20,146 @@ import (
 	"strings"
 )
 
+type ProblemAPI interface {
+
+	/*
+		CloseProblem Closes the specified problem and adds a closing comment to it
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem to be closed.
+		@return ApiCloseProblemRequest
+
+		Deprecated
+	*/
+	CloseProblem(ctx context.Context, problemId string) ApiCloseProblemRequest
+
+	// CloseProblemExecute executes the request
+	//  @return ProblemCloseResult
+	// Deprecated
+	CloseProblemExecute(r ApiCloseProblemRequest) (*ProblemCloseResult, *http.Response, error)
+
+	/*
+		DeleteComment Deletes an existing comment to the specified problem.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem where you want to delete the comment.
+		@param commentId The ID of the comment to delete.
+		@return ApiDeleteCommentRequest
+
+		Deprecated
+	*/
+	DeleteComment(ctx context.Context, problemId string, commentId string) ApiDeleteCommentRequest
+
+	// DeleteCommentExecute executes the request
+	// Deprecated
+	DeleteCommentExecute(r ApiDeleteCommentRequest) (*http.Response, error)
+
+	/*
+		GetComment Gets all the comments to the specified problem
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem where you want to read the comments.
+		@return ApiGetCommentRequest
+
+		Deprecated
+	*/
+	GetComment(ctx context.Context, problemId string) ApiGetCommentRequest
+
+	// GetCommentExecute executes the request
+	//  @return ProblemCommentList
+	// Deprecated
+	GetCommentExecute(r ApiGetCommentRequest) (*ProblemCommentList, *http.Response, error)
+
+	/*
+		GetDetails Gets the properties of the specified problem
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem you're inquiring.
+		@return ApiGetDetailsRequest
+
+		Deprecated
+	*/
+	GetDetails(ctx context.Context, problemId string) ApiGetDetailsRequest
+
+	// GetDetailsExecute executes the request
+	//  @return ProblemDetailsResultWrapper
+	// Deprecated
+	GetDetailsExecute(r ApiGetDetailsRequest) (*ProblemDetailsResultWrapper, *http.Response, error)
+
+	/*
+			GetFeed Gets the information about problems within the specified timeframe
+
+			A problem is included in the response, if either start or end timestamp of the problem is within the defined timeframe.
+
+		The output is limited to **5,000** problems. You can narrow it down by specifying query parameters.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetFeedRequest
+
+			Deprecated
+	*/
+	GetFeed(ctx context.Context) ApiGetFeedRequest
+
+	// GetFeedExecute executes the request
+	//  @return ProblemFeedResultWrapper
+	// Deprecated
+	GetFeedExecute(r ApiGetFeedRequest) (*ProblemFeedResultWrapper, *http.Response, error)
+
+	/*
+		GetProblemStatus Lists the number of open problems, split by impact level
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetProblemStatusRequest
+
+		Deprecated
+	*/
+	GetProblemStatus(ctx context.Context) ApiGetProblemStatusRequest
+
+	// GetProblemStatusExecute executes the request
+	//  @return ProblemStatusResultWrapper
+	// Deprecated
+	GetProblemStatusExecute(r ApiGetProblemStatusRequest) (*ProblemStatusResultWrapper, *http.Response, error)
+
+	/*
+		PushComment Adds a new comment to the specified problem
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem where you want to add the comment.
+		@return ApiPushCommentRequest
+
+		Deprecated
+	*/
+	PushComment(ctx context.Context, problemId string) ApiPushCommentRequest
+
+	// PushCommentExecute executes the request
+	//  @return ProblemComment
+	// Deprecated
+	PushCommentExecute(r ApiPushCommentRequest) (*ProblemComment, *http.Response, error)
+
+	/*
+		UpdateComment Updates an existing comment to the specified problem
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param problemId The ID of the problem where you want to edit the comment.
+		@param commentId The ID of the comment you want to edit.
+		@return ApiUpdateCommentRequest
+
+		Deprecated
+	*/
+	UpdateComment(ctx context.Context, problemId string, commentId string) ApiUpdateCommentRequest
+
+	// UpdateCommentExecute executes the request
+	//  @return ProblemComment
+	// Deprecated
+	UpdateCommentExecute(r ApiUpdateCommentRequest) (*ProblemComment, *http.Response, error)
+}
+
 // ProblemAPIService ProblemAPI service
 type ProblemAPIService service
 
 type ApiCloseProblemRequest struct {
 	ctx        context.Context
-	ApiService *ProblemAPIService
+	ApiService ProblemAPI
 	problemId  string
 	content    *string
 }
@@ -180,7 +314,7 @@ func (a *ProblemAPIService) CloseProblemExecute(r ApiCloseProblemRequest) (*Prob
 
 type ApiDeleteCommentRequest struct {
 	ctx        context.Context
-	ApiService *ProblemAPIService
+	ApiService ProblemAPI
 	problemId  string
 	commentId  string
 }
@@ -313,7 +447,7 @@ func (a *ProblemAPIService) DeleteCommentExecute(r ApiDeleteCommentRequest) (*ht
 
 type ApiGetCommentRequest struct {
 	ctx        context.Context
-	ApiService *ProblemAPIService
+	ApiService ProblemAPI
 	problemId  string
 }
 
@@ -454,7 +588,7 @@ func (a *ProblemAPIService) GetCommentExecute(r ApiGetCommentRequest) (*ProblemC
 
 type ApiGetDetailsRequest struct {
 	ctx        context.Context
-	ApiService *ProblemAPIService
+	ApiService ProblemAPI
 	problemId  string
 }
 
@@ -595,7 +729,7 @@ func (a *ProblemAPIService) GetDetailsExecute(r ApiGetDetailsRequest) (*ProblemD
 
 type ApiGetFeedRequest struct {
 	ctx            context.Context
-	ApiService     *ProblemAPIService
+	ApiService     ProblemAPI
 	relativeTime   *string
 	startTimestamp *int64
 	endTimestamp   *int64
@@ -824,7 +958,7 @@ func (a *ProblemAPIService) GetFeedExecute(r ApiGetFeedRequest) (*ProblemFeedRes
 
 type ApiGetProblemStatusRequest struct {
 	ctx        context.Context
-	ApiService *ProblemAPIService
+	ApiService ProblemAPI
 }
 
 func (r ApiGetProblemStatusRequest) Execute() (*ProblemStatusResultWrapper, *http.Response, error) {
@@ -961,7 +1095,7 @@ func (a *ProblemAPIService) GetProblemStatusExecute(r ApiGetProblemStatusRequest
 
 type ApiPushCommentRequest struct {
 	ctx                context.Context
-	ApiService         *ProblemAPIService
+	ApiService         ProblemAPI
 	problemId          string
 	pushProblemComment *PushProblemComment
 }
@@ -1111,7 +1245,7 @@ func (a *ProblemAPIService) PushCommentExecute(r ApiPushCommentRequest) (*Proble
 
 type ApiUpdateCommentRequest struct {
 	ctx                context.Context
-	ApiService         *ProblemAPIService
+	ApiService         ProblemAPI
 	problemId          string
 	commentId          string
 	pushProblemComment *PushProblemComment

@@ -18,12 +18,43 @@ import (
 	"net/url"
 )
 
+type RUMUserSessionsAPI interface {
+
+	/*
+		GetUsqlResultAsTable Returns the result of the query as a table structure
+
+		The result is a flat list of rows containing the requested columns.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetUsqlResultAsTableRequest
+	*/
+	GetUsqlResultAsTable(ctx context.Context) ApiGetUsqlResultAsTableRequest
+
+	// GetUsqlResultAsTableExecute executes the request
+	//  @return UsqlResultAsTable
+	GetUsqlResultAsTableExecute(r ApiGetUsqlResultAsTableRequest) (*UsqlResultAsTable, *http.Response, error)
+
+	/*
+		GetUsqlResultAsTree Returns the result of the query as a tree structure
+
+		To get a proper tree structure, you need to specify grouping in the query.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetUsqlResultAsTreeRequest
+	*/
+	GetUsqlResultAsTree(ctx context.Context) ApiGetUsqlResultAsTreeRequest
+
+	// GetUsqlResultAsTreeExecute executes the request
+	//  @return UsqlResultAsTree
+	GetUsqlResultAsTreeExecute(r ApiGetUsqlResultAsTreeRequest) (*UsqlResultAsTree, *http.Response, error)
+}
+
 // RUMUserSessionsAPIService RUMUserSessionsAPI service
 type RUMUserSessionsAPIService service
 
 type ApiGetUsqlResultAsTableRequest struct {
 	ctx               context.Context
-	ApiService        *RUMUserSessionsAPIService
+	ApiService        RUMUserSessionsAPI
 	query             *string
 	startTimestamp    *int64
 	endTimestamp      *int64
@@ -245,7 +276,7 @@ func (a *RUMUserSessionsAPIService) GetUsqlResultAsTableExecute(r ApiGetUsqlResu
 
 type ApiGetUsqlResultAsTreeRequest struct {
 	ctx               context.Context
-	ApiService        *RUMUserSessionsAPIService
+	ApiService        RUMUserSessionsAPI
 	query             *string
 	startTimestamp    *int64
 	endTimestamp      *int64

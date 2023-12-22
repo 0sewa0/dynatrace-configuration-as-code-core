@@ -19,12 +19,82 @@ import (
 	"strings"
 )
 
+type EventsAPI interface {
+
+	/*
+		GetEventById Gets the parameters of the specified event
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param eventId The ID of the required event.
+		@return ApiGetEventByIdRequest
+
+		Deprecated
+	*/
+	GetEventById(ctx context.Context, eventId string) ApiGetEventByIdRequest
+
+	// GetEventByIdExecute executes the request
+	//  @return EventRestEntry
+	// Deprecated
+	GetEventByIdExecute(r ApiGetEventByIdRequest) (*EventRestEntry, *http.Response, error)
+
+	/*
+			PostEvent Pushes custom events to one or more monitored entities
+
+			You can use this endpoint to:
+
+		* Push information-only events from third-party systems such as CI platforms (Jenkins, Bamboo, Electric Cloud, etc.) to provide additional information for Dynatrace automated root cause analysis. The time of event closure is already known and the event IDs are returned instantly. You can report these events for up to **30 days** into the past. The information-only event types are:
+		`CUSTOM_ANNOTATION`
+		 `CUSTOM_CONFIGURATION`
+		 `CUSTOM_DEPLOYMENT`
+		 `CUSTOM_INFO`
+		 `MARKED_FOR_TERMINATION`
+
+		* Push problem-opening events (for example, an error rate increase) to trigger the Dynatrace automated root cause analysis engine.  Correlation IDs are returned instead of event IDs. These events stay open until the specified timeout expires. To prevent expiration, you can refresh these events by sending the same payload again. You can report these events for up to **60 minutes** into the past. The problem-opening event types are (sorted by severity level, descending):
+		`AVAILABILITY_EVENT`
+		 `ERROR_EVENT`
+		 `PERFORMANCE_EVENT`
+		 `RESOURCE_CONTENTION`
+
+		The actual set of event parameters depends on the type of your event. To find the parameters mapping, see [POST an event](https://dt-url.net/1v63r77) in Dynatrace Documentation.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiPostEventRequest
+
+			Deprecated
+	*/
+	PostEvent(ctx context.Context) ApiPostEventRequest
+
+	// PostEventExecute executes the request
+	//  @return EventStoreResult
+	// Deprecated
+	PostEventExecute(r ApiPostEventRequest) (*EventStoreResult, *http.Response, error)
+
+	/*
+			QueryEvents Lists all the events of your environment, along with their parameters
+
+			Because the possible number of events can be huge, the response is limited to 150 events. You can focus the output by specifying filtering parameters for the request.
+
+		An event is included in the response, if either start or end timestamp of the event is within the defined timeframe.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiQueryEventsRequest
+
+			Deprecated
+	*/
+	QueryEvents(ctx context.Context) ApiQueryEventsRequest
+
+	// QueryEventsExecute executes the request
+	//  @return EventQueryResult
+	// Deprecated
+	QueryEventsExecute(r ApiQueryEventsRequest) (*EventQueryResult, *http.Response, error)
+}
+
 // EventsAPIService EventsAPI service
 type EventsAPIService service
 
 type ApiGetEventByIdRequest struct {
 	ctx        context.Context
-	ApiService *EventsAPIService
+	ApiService EventsAPI
 	eventId    string
 }
 
@@ -165,7 +235,7 @@ func (a *EventsAPIService) GetEventByIdExecute(r ApiGetEventByIdRequest) (*Event
 
 type ApiPostEventRequest struct {
 	ctx           context.Context
-	ApiService    *EventsAPIService
+	ApiService    EventsAPI
 	eventCreation *EventCreation
 }
 
@@ -330,7 +400,7 @@ func (a *EventsAPIService) PostEventExecute(r ApiPostEventRequest) (*EventStoreR
 
 type ApiQueryEventsRequest struct {
 	ctx          context.Context
-	ApiService   *EventsAPIService
+	ApiService   EventsAPI
 	from         *int64
 	to           *int64
 	relativeTime *string

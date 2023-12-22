@@ -18,12 +18,48 @@ import (
 	"net/url"
 )
 
+type SyntheticThirdPartyAPI interface {
+
+	/*
+		PushEvents Pushes third-party synthetic events to Dynatrace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiPushEventsRequest
+	*/
+	PushEvents(ctx context.Context) ApiPushEventsRequest
+
+	// PushEventsExecute executes the request
+	PushEventsExecute(r ApiPushEventsRequest) (*http.Response, error)
+
+	/*
+		PushStateModification Modifies the operation state of all third-party monitors
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiPushStateModificationRequest
+	*/
+	PushStateModification(ctx context.Context) ApiPushStateModificationRequest
+
+	// PushStateModificationExecute executes the request
+	PushStateModificationExecute(r ApiPushStateModificationRequest) (*http.Response, error)
+
+	/*
+		TestResults Pushes third-party synthetic monitors, locations, and results to Dynatrace
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiTestResultsRequest
+	*/
+	TestResults(ctx context.Context) ApiTestResultsRequest
+
+	// TestResultsExecute executes the request
+	TestResultsExecute(r ApiTestResultsRequest) (*http.Response, error)
+}
+
 // SyntheticThirdPartyAPIService SyntheticThirdPartyAPI service
 type SyntheticThirdPartyAPIService service
 
 type ApiPushEventsRequest struct {
 	ctx                          context.Context
-	ApiService                   *SyntheticThirdPartyAPIService
+	ApiService                   SyntheticThirdPartyAPI
 	model3rdPartySyntheticEvents *Model3rdPartySyntheticEvents
 }
 
@@ -167,7 +203,7 @@ func (a *SyntheticThirdPartyAPIService) PushEventsExecute(r ApiPushEventsRequest
 
 type ApiPushStateModificationRequest struct {
 	ctx               context.Context
-	ApiService        *SyntheticThirdPartyAPIService
+	ApiService        SyntheticThirdPartyAPI
 	stateModification *StateModification
 }
 
@@ -311,7 +347,7 @@ func (a *SyntheticThirdPartyAPIService) PushStateModificationExecute(r ApiPushSt
 
 type ApiTestResultsRequest struct {
 	ctx                         context.Context
-	ApiService                  *SyntheticThirdPartyAPIService
+	ApiService                  SyntheticThirdPartyAPI
 	model3rdPartySyntheticTests *Model3rdPartySyntheticTests
 }
 

@@ -20,12 +20,83 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeHostAPI interface {
+
+	/*
+			GetHosts Lists all available hosts in your environment
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		You can additionally limit the output by using pagination:
+		1. Specify the number of results per page in the **pageSize** query parameter.
+		2. Then use the URL-encoded cursor from the **Next-Page-Key** response header in the **nextPageKey** query parameter to obtain subsequent pages.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetHostsRequest
+
+			Deprecated
+	*/
+	GetHosts(ctx context.Context) ApiGetHostsRequest
+
+	// GetHostsExecute executes the request
+	//  @return []Host
+	// Deprecated
+	GetHostsExecute(r ApiGetHostsRequest) ([]Host, *http.Response, error)
+
+	/*
+		GetSingleHost Gets parameters of the specified host
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required host.
+		@return ApiGetSingleHostRequest
+
+		Deprecated
+	*/
+	GetSingleHost(ctx context.Context, meIdentifier string) ApiGetSingleHostRequest
+
+	// GetSingleHostExecute executes the request
+	//  @return Host
+	// Deprecated
+	GetSingleHostExecute(r ApiGetSingleHostRequest) (*Host, *http.Response, error)
+
+	/*
+		RemoveTags Remove tag of the specified host
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the host.
+		@param tag The tag to be removed.
+		@return ApiRemoveTagsRequest
+
+		Deprecated
+	*/
+	RemoveTags(ctx context.Context, meIdentifier string, tag string) ApiRemoveTagsRequest
+
+	// RemoveTagsExecute executes the request
+	// Deprecated
+	RemoveTagsExecute(r ApiRemoveTagsRequest) (*http.Response, error)
+
+	/*
+		UpdateHost Updates properties of the specified host
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the host to be updated.
+		@return ApiUpdateHostRequest
+
+		Deprecated
+	*/
+	UpdateHost(ctx context.Context, meIdentifier string) ApiUpdateHostRequest
+
+	// UpdateHostExecute executes the request
+	// Deprecated
+	UpdateHostExecute(r ApiUpdateHostRequest) (*http.Response, error)
+}
+
 // TopologySmartscapeHostAPIService TopologySmartscapeHostAPI service
 type TopologySmartscapeHostAPIService service
 
 type ApiGetHostsRequest struct {
 	ctx                      context.Context
-	ApiService               *TopologySmartscapeHostAPIService
+	ApiService               TopologySmartscapeHostAPI
 	startTimestamp           *int64
 	endTimestamp             *int64
 	relativeTime             *string
@@ -318,7 +389,7 @@ func (a *TopologySmartscapeHostAPIService) GetHostsExecute(r ApiGetHostsRequest)
 
 type ApiGetSingleHostRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeHostAPIService
+	ApiService   TopologySmartscapeHostAPI
 	meIdentifier string
 }
 
@@ -459,7 +530,7 @@ func (a *TopologySmartscapeHostAPIService) GetSingleHostExecute(r ApiGetSingleHo
 
 type ApiRemoveTagsRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeHostAPIService
+	ApiService   TopologySmartscapeHostAPI
 	meIdentifier string
 	tag          string
 }
@@ -602,7 +673,7 @@ func (a *TopologySmartscapeHostAPIService) RemoveTagsExecute(r ApiRemoveTagsRequ
 
 type ApiUpdateHostRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeHostAPIService
+	ApiService   TopologySmartscapeHostAPI
 	meIdentifier string
 	updateEntity *UpdateEntity
 }

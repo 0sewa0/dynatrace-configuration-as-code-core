@@ -19,12 +19,77 @@ import (
 	"strings"
 )
 
+type MaintenanceWindowAPI interface {
+
+	/*
+		GetAllMaintenanceWindowConfigs Lists all parameters of all maintenance windows available in your Dynatrace environment.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAllMaintenanceWindowConfigsRequest
+
+		Deprecated
+	*/
+	GetAllMaintenanceWindowConfigs(ctx context.Context) ApiGetAllMaintenanceWindowConfigsRequest
+
+	// GetAllMaintenanceWindowConfigsExecute executes the request
+	//  @return []MaintenanceWindow
+	// Deprecated
+	GetAllMaintenanceWindowConfigsExecute(r ApiGetAllMaintenanceWindowConfigsRequest) ([]MaintenanceWindow, *http.Response, error)
+
+	/*
+		GetMaintenanceWindowConfig Lists all parameters of the specified maintenance window.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param uid The ID of the required maintenance window.
+		@return ApiGetMaintenanceWindowConfigRequest
+
+		Deprecated
+	*/
+	GetMaintenanceWindowConfig(ctx context.Context, uid string) ApiGetMaintenanceWindowConfigRequest
+
+	// GetMaintenanceWindowConfigExecute executes the request
+	//  @return MaintenanceWindow
+	// Deprecated
+	GetMaintenanceWindowConfigExecute(r ApiGetMaintenanceWindowConfigRequest) (*MaintenanceWindow, *http.Response, error)
+
+	/*
+		RemoveMaintenanceWindowConfig Deletes the specified maintenance window
+
+		Deletion cannot be undone.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param uid The ID of the maintenance window to delete.
+		@return ApiRemoveMaintenanceWindowConfigRequest
+
+		Deprecated
+	*/
+	RemoveMaintenanceWindowConfig(ctx context.Context, uid string) ApiRemoveMaintenanceWindowConfigRequest
+
+	// RemoveMaintenanceWindowConfigExecute executes the request
+	// Deprecated
+	RemoveMaintenanceWindowConfigExecute(r ApiRemoveMaintenanceWindowConfigRequest) (*http.Response, error)
+
+	/*
+		StoreMaintenanceWindowConfig Creates a new or updates an existing maintenance window
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiStoreMaintenanceWindowConfigRequest
+
+		Deprecated
+	*/
+	StoreMaintenanceWindowConfig(ctx context.Context) ApiStoreMaintenanceWindowConfigRequest
+
+	// StoreMaintenanceWindowConfigExecute executes the request
+	// Deprecated
+	StoreMaintenanceWindowConfigExecute(r ApiStoreMaintenanceWindowConfigRequest) (*http.Response, error)
+}
+
 // MaintenanceWindowAPIService MaintenanceWindowAPI service
 type MaintenanceWindowAPIService service
 
 type ApiGetAllMaintenanceWindowConfigsRequest struct {
 	ctx        context.Context
-	ApiService *MaintenanceWindowAPIService
+	ApiService MaintenanceWindowAPI
 	from       *int64
 	to         *int64
 	type_      *string
@@ -200,7 +265,7 @@ func (a *MaintenanceWindowAPIService) GetAllMaintenanceWindowConfigsExecute(r Ap
 
 type ApiGetMaintenanceWindowConfigRequest struct {
 	ctx        context.Context
-	ApiService *MaintenanceWindowAPIService
+	ApiService MaintenanceWindowAPI
 	uid        string
 }
 
@@ -341,7 +406,7 @@ func (a *MaintenanceWindowAPIService) GetMaintenanceWindowConfigExecute(r ApiGet
 
 type ApiRemoveMaintenanceWindowConfigRequest struct {
 	ctx        context.Context
-	ApiService *MaintenanceWindowAPIService
+	ApiService MaintenanceWindowAPI
 	uid        string
 }
 
@@ -471,7 +536,7 @@ func (a *MaintenanceWindowAPIService) RemoveMaintenanceWindowConfigExecute(r Api
 
 type ApiStoreMaintenanceWindowConfigRequest struct {
 	ctx               context.Context
-	ApiService        *MaintenanceWindowAPIService
+	ApiService        MaintenanceWindowAPI
 	maintenanceWindow *MaintenanceWindow
 }
 

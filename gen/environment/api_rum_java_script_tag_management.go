@@ -19,12 +19,133 @@ import (
 	"strings"
 )
 
+type RUMJavaScriptTagManagementAPI interface {
+
+	/*
+		GetAppRevision Gets the version of the RUM JavaScript code injected into specified application
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+		@return ApiGetAppRevisionRequest
+	*/
+	GetAppRevision(ctx context.Context, entity string) ApiGetAppRevisionRequest
+
+	// GetAppRevisionExecute executes the request
+	//  @return string
+	GetAppRevisionExecute(r ApiGetAppRevisionRequest) (string, *http.Response, error)
+
+	/*
+			GetAsyncCodeSnippet Downloads the asynchronous code snippet
+
+			This code provides configuration and basic code to be manually inserted into your web application code.
+
+		 The full functionality of the monitoring code is loaded asynchronously.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+			@return ApiGetAsyncCodeSnippetRequest
+	*/
+	GetAsyncCodeSnippet(ctx context.Context, entity string) ApiGetAsyncCodeSnippetRequest
+
+	// GetAsyncCodeSnippetExecute executes the request
+	//  @return string
+	GetAsyncCodeSnippetExecute(r ApiGetAsyncCodeSnippetRequest) (string, *http.Response, error)
+
+	/*
+		GetJsInlineScript Downloads inline code
+
+		Returns the inline code of the most recent OneAgent JavaScript. This is a complete configuration and monitoring code to be manually inserted into your web application code.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+		@return ApiGetJsInlineScriptRequest
+	*/
+	GetJsInlineScript(ctx context.Context, entity string) ApiGetJsInlineScriptRequest
+
+	// GetJsInlineScriptExecute executes the request
+	//  @return string
+	GetJsInlineScriptExecute(r ApiGetJsInlineScriptRequest) (string, *http.Response, error)
+
+	/*
+		GetJsLatestVersion Gets the latest version of OneAgent JavaScript library
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetJsLatestVersionRequest
+	*/
+	GetJsLatestVersion(ctx context.Context) ApiGetJsLatestVersionRequest
+
+	// GetJsLatestVersionExecute executes the request
+	//  @return string
+	GetJsLatestVersionExecute(r ApiGetJsLatestVersionRequest) (string, *http.Response, error)
+
+	/*
+			GetJsScript Downloads OneAgent JavaScript tag
+
+			Returns the OneAgent JavaScript tag. This is a complete configuration and monitoring code to be manually inserted into your web application code.
+
+		 The monitoring code is loaded as a separate file from a CDN.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+			@return ApiGetJsScriptRequest
+	*/
+	GetJsScript(ctx context.Context, entity string) ApiGetJsScriptRequest
+
+	// GetJsScriptExecute executes the request
+	//  @return string
+	GetJsScriptExecute(r ApiGetJsScriptRequest) (string, *http.Response, error)
+
+	/*
+		GetJsTagComplete Downloads JavaScript tag
+
+		Returns a JavaScript tag to be manually inserted into your web application code. The tag references a JavaScript file with full configuration and monitoring code, which causes a lower possible caching duration.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+		@return ApiGetJsTagCompleteRequest
+	*/
+	GetJsTagComplete(ctx context.Context, entity string) ApiGetJsTagCompleteRequest
+
+	// GetJsTagCompleteExecute executes the request
+	//  @return string
+	GetJsTagCompleteExecute(r ApiGetJsTagCompleteRequest) (string, *http.Response, error)
+
+	/*
+		GetManualApps Lists all manually injected applications
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetManualAppsRequest
+	*/
+	GetManualApps(ctx context.Context) ApiGetManualAppsRequest
+
+	// GetManualAppsExecute executes the request
+	//  @return []ManualApplication
+	GetManualAppsExecute(r ApiGetManualAppsRequest) ([]ManualApplication, *http.Response, error)
+
+	/*
+			GetSyncCodeSnippet Downloads the synchronous code snippet
+
+			This code provides configuration and basic code to be manually inserted into your web application code.
+
+		 The full functionality of the monitoring code is loaded synchronously.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param entity The Dynatrace entity ID of the application.   You can obtain it from the response of the [GET the list of manually injected applications](https://dt-url.net/dl03sgo) call.
+			@return ApiGetSyncCodeSnippetRequest
+	*/
+	GetSyncCodeSnippet(ctx context.Context, entity string) ApiGetSyncCodeSnippetRequest
+
+	// GetSyncCodeSnippetExecute executes the request
+	//  @return string
+	GetSyncCodeSnippetExecute(r ApiGetSyncCodeSnippetRequest) (string, *http.Response, error)
+}
+
 // RUMJavaScriptTagManagementAPIService RUMJavaScriptTagManagementAPI service
 type RUMJavaScriptTagManagementAPIService service
 
 type ApiGetAppRevisionRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 
@@ -161,7 +282,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetAppRevisionExecute(r ApiGetApp
 
 type ApiGetAsyncCodeSnippetRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 
@@ -302,7 +423,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetAsyncCodeSnippetExecute(r ApiG
 
 type ApiGetJsInlineScriptRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 
@@ -441,7 +562,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetJsInlineScriptExecute(r ApiGet
 
 type ApiGetJsLatestVersionRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 }
 
 func (r ApiGetJsLatestVersionRequest) Execute() (string, *http.Response, error) {
@@ -574,7 +695,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetJsLatestVersionExecute(r ApiGe
 
 type ApiGetJsScriptRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 
@@ -715,7 +836,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetJsScriptExecute(r ApiGetJsScri
 
 type ApiGetJsTagCompleteRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 
@@ -854,7 +975,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetJsTagCompleteExecute(r ApiGetJ
 
 type ApiGetManualAppsRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 }
 
 func (r ApiGetManualAppsRequest) Execute() ([]ManualApplication, *http.Response, error) {
@@ -987,7 +1108,7 @@ func (a *RUMJavaScriptTagManagementAPIService) GetManualAppsExecute(r ApiGetManu
 
 type ApiGetSyncCodeSnippetRequest struct {
 	ctx        context.Context
-	ApiService *RUMJavaScriptTagManagementAPIService
+	ApiService RUMJavaScriptTagManagementAPI
 	entity     string
 }
 

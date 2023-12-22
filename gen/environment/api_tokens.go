@@ -20,12 +20,116 @@ import (
 	"strings"
 )
 
+type TokensAPI interface {
+
+	/*
+		CreateToken Creates a new token
+
+		The newly created token will be owned by the same user who owns the token used for authentication of the call.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiCreateTokenRequest
+
+		Deprecated
+	*/
+	CreateToken(ctx context.Context) ApiCreateTokenRequest
+
+	// CreateTokenExecute executes the request
+	//  @return Token
+	// Deprecated
+	CreateTokenExecute(r ApiCreateTokenRequest) (*Token, *http.Response, error)
+
+	/*
+		DeleteToken Deletes the specified token
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id The ID of the token to be deleted. Can either be the public identifier or the secret.   You can't delete the token you're using for authentication of the request.
+		@return ApiDeleteTokenRequest
+
+		Deprecated
+	*/
+	DeleteToken(ctx context.Context, id string) ApiDeleteTokenRequest
+
+	// DeleteTokenExecute executes the request
+	// Deprecated
+	DeleteTokenExecute(r ApiDeleteTokenRequest) (*http.Response, error)
+
+	/*
+		GetTokenMetadata Lists token metadata by token ID
+
+		The token itself is **not** exposed.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id The ID of the required token.
+		@return ApiGetTokenMetadataRequest
+
+		Deprecated
+	*/
+	GetTokenMetadata(ctx context.Context, id string) ApiGetTokenMetadataRequest
+
+	// GetTokenMetadataExecute executes the request
+	//  @return TokenMetadata
+	// Deprecated
+	GetTokenMetadataExecute(r ApiGetTokenMetadataRequest) (*TokenMetadata, *http.Response, error)
+
+	/*
+		GetTokenMetadataBySecret Lists token metadata by token itself
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetTokenMetadataBySecretRequest
+
+		Deprecated
+	*/
+	GetTokenMetadataBySecret(ctx context.Context) ApiGetTokenMetadataBySecretRequest
+
+	// GetTokenMetadataBySecretExecute executes the request
+	//  @return TokenMetadata
+	// Deprecated
+	GetTokenMetadataBySecretExecute(r ApiGetTokenMetadataBySecretRequest) (*TokenMetadata, *http.Response, error)
+
+	/*
+			ListTokens Lists available tokens in your environment
+
+			You can narrow down the output by adding parameters. The token has to match *all* the specified parameters.
+
+		 You can also specify the limit of returned tokens.
+
+		 **This list may contain tokens which were created automatically** (e.g. InstallerDownload, Mobile, ...) and are not visible on the `Settings` page. Deleting those might have unintended side-effects as they might still be in use.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiListTokensRequest
+
+			Deprecated
+	*/
+	ListTokens(ctx context.Context) ApiListTokensRequest
+
+	// ListTokensExecute executes the request
+	//  @return StubList
+	// Deprecated
+	ListTokensExecute(r ApiListTokensRequest) (*StubList, *http.Response, error)
+
+	/*
+		UpdateToken Updates the specified token
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param id The ID of the token to be updated.    You can't update the token you're using for authentication of the request.
+		@return ApiUpdateTokenRequest
+
+		Deprecated
+	*/
+	UpdateToken(ctx context.Context, id string) ApiUpdateTokenRequest
+
+	// UpdateTokenExecute executes the request
+	// Deprecated
+	UpdateTokenExecute(r ApiUpdateTokenRequest) (*http.Response, error)
+}
+
 // TokensAPIService TokensAPI service
 type TokensAPIService service
 
 type ApiCreateTokenRequest struct {
 	ctx         context.Context
-	ApiService  *TokensAPIService
+	ApiService  TokensAPI
 	createToken *CreateToken
 }
 
@@ -187,7 +291,7 @@ func (a *TokensAPIService) CreateTokenExecute(r ApiCreateTokenRequest) (*Token, 
 
 type ApiDeleteTokenRequest struct {
 	ctx        context.Context
-	ApiService *TokensAPIService
+	ApiService TokensAPI
 	id         string
 }
 
@@ -337,7 +441,7 @@ func (a *TokensAPIService) DeleteTokenExecute(r ApiDeleteTokenRequest) (*http.Re
 
 type ApiGetTokenMetadataRequest struct {
 	ctx        context.Context
-	ApiService *TokensAPIService
+	ApiService TokensAPI
 	id         string
 }
 
@@ -491,7 +595,7 @@ func (a *TokensAPIService) GetTokenMetadataExecute(r ApiGetTokenMetadataRequest)
 
 type ApiGetTokenMetadataBySecretRequest struct {
 	ctx        context.Context
-	ApiService *TokensAPIService
+	ApiService TokensAPI
 	token      *Token
 }
 
@@ -640,7 +744,7 @@ func (a *TokensAPIService) GetTokenMetadataBySecretExecute(r ApiGetTokenMetadata
 
 type ApiListTokensRequest struct {
 	ctx         context.Context
-	ApiService  *TokensAPIService
+	ApiService  TokensAPI
 	limit       *int32
 	user        *string
 	permissions *[]string
@@ -844,7 +948,7 @@ func (a *TokensAPIService) ListTokensExecute(r ApiListTokensRequest) (*StubList,
 
 type ApiUpdateTokenRequest struct {
 	ctx         context.Context
-	ApiService  *TokensAPIService
+	ApiService  TokensAPI
 	id          string
 	updateToken *UpdateToken
 }

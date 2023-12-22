@@ -18,12 +18,27 @@ import (
 	"net/url"
 )
 
+type ClusterTimeAPI interface {
+
+	/*
+		GetCurrentClusterTime Gets the current time of the Dynatrace server in UTC milliseconds
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetCurrentClusterTimeRequest
+	*/
+	GetCurrentClusterTime(ctx context.Context) ApiGetCurrentClusterTimeRequest
+
+	// GetCurrentClusterTimeExecute executes the request
+	//  @return int64
+	GetCurrentClusterTimeExecute(r ApiGetCurrentClusterTimeRequest) (int64, *http.Response, error)
+}
+
 // ClusterTimeAPIService ClusterTimeAPI service
 type ClusterTimeAPIService service
 
 type ApiGetCurrentClusterTimeRequest struct {
 	ctx        context.Context
-	ApiService *ClusterTimeAPIService
+	ApiService ClusterTimeAPI
 }
 
 func (r ApiGetCurrentClusterTimeRequest) Execute() (int64, *http.Response, error) {

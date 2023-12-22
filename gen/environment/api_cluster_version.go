@@ -18,12 +18,27 @@ import (
 	"net/url"
 )
 
+type ClusterVersionAPI interface {
+
+	/*
+		GetVersion Gets the current version of the Dynatrace server
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetVersionRequest
+	*/
+	GetVersion(ctx context.Context) ApiGetVersionRequest
+
+	// GetVersionExecute executes the request
+	//  @return ClusterVersion
+	GetVersionExecute(r ApiGetVersionRequest) (*ClusterVersion, *http.Response, error)
+}
+
 // ClusterVersionAPIService ClusterVersionAPI service
 type ClusterVersionAPIService service
 
 type ApiGetVersionRequest struct {
 	ctx        context.Context
-	ApiService *ClusterVersionAPIService
+	ApiService ClusterVersionAPI
 }
 
 func (r ApiGetVersionRequest) Execute() (*ClusterVersion, *http.Response, error) {

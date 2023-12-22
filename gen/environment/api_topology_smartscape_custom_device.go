@@ -19,12 +19,31 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeCustomDeviceAPI interface {
+
+	/*
+		CreateCustomDataPoints Creates or updates a custom device, or reports metric data points to the custom device.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param customDeviceId The ID of the custom device.    If you use the ID of an existing device, the respective parameters will be updated.   Don't use Dynatrace entity ID here.
+		@return ApiCreateCustomDataPointsRequest
+
+		Deprecated
+	*/
+	CreateCustomDataPoints(ctx context.Context, customDeviceId string) ApiCreateCustomDataPointsRequest
+
+	// CreateCustomDataPointsExecute executes the request
+	//  @return CustomDevicePushResult
+	// Deprecated
+	CreateCustomDataPointsExecute(r ApiCreateCustomDataPointsRequest) (*CustomDevicePushResult, *http.Response, error)
+}
+
 // TopologySmartscapeCustomDeviceAPIService TopologySmartscapeCustomDeviceAPI service
 type TopologySmartscapeCustomDeviceAPIService service
 
 type ApiCreateCustomDataPointsRequest struct {
 	ctx                     context.Context
-	ApiService              *TopologySmartscapeCustomDeviceAPIService
+	ApiService              TopologySmartscapeCustomDeviceAPI
 	customDeviceId          string
 	customDevicePushMessage *CustomDevicePushMessage
 }

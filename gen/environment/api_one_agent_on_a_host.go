@@ -19,12 +19,54 @@ import (
 	"reflect"
 )
 
+type OneAgentOnAHostAPI interface {
+
+	/*
+		DeleteAgentPersistedPotentialProblems Deletes all detected auto-update blocking problems for this environment. | maturity=EARLY_ADOPTER
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiDeleteAgentPersistedPotentialProblemsRequest
+	*/
+	DeleteAgentPersistedPotentialProblems(ctx context.Context) ApiDeleteAgentPersistedPotentialProblemsRequest
+
+	// DeleteAgentPersistedPotentialProblemsExecute executes the request
+	DeleteAgentPersistedPotentialProblemsExecute(r ApiDeleteAgentPersistedPotentialProblemsRequest) (*http.Response, error)
+
+	/*
+		GetAgentPersistedPotentialProblems Gets a list of cluster-side detected auto-update problems that may block further rollout of a OneAgent version on a particular OS. | maturity=EARLY_ADOPTER
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAgentPersistedPotentialProblemsRequest
+	*/
+	GetAgentPersistedPotentialProblems(ctx context.Context) ApiGetAgentPersistedPotentialProblemsRequest
+
+	// GetAgentPersistedPotentialProblemsExecute executes the request
+	//  @return AgentPotentialProblemsState
+	GetAgentPersistedPotentialProblemsExecute(r ApiGetAgentPersistedPotentialProblemsRequest) (*AgentPotentialProblemsState, *http.Response, error)
+
+	/*
+			GetHostsWithSpecificAgents Gets the list of hosts with OneAgent deployment information for each host
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		The response is limited to 500 items. Use the **nextPageKey** cursor to obtain subsequent results.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetHostsWithSpecificAgentsRequest
+	*/
+	GetHostsWithSpecificAgents(ctx context.Context) ApiGetHostsWithSpecificAgentsRequest
+
+	// GetHostsWithSpecificAgentsExecute executes the request
+	//  @return HostsListPage
+	GetHostsWithSpecificAgentsExecute(r ApiGetHostsWithSpecificAgentsRequest) (*HostsListPage, *http.Response, error)
+}
+
 // OneAgentOnAHostAPIService OneAgentOnAHostAPI service
 type OneAgentOnAHostAPIService service
 
 type ApiDeleteAgentPersistedPotentialProblemsRequest struct {
 	ctx        context.Context
-	ApiService *OneAgentOnAHostAPIService
+	ApiService OneAgentOnAHostAPI
 }
 
 func (r ApiDeleteAgentPersistedPotentialProblemsRequest) Execute() (*http.Response, error) {
@@ -145,7 +187,7 @@ func (a *OneAgentOnAHostAPIService) DeleteAgentPersistedPotentialProblemsExecute
 
 type ApiGetAgentPersistedPotentialProblemsRequest struct {
 	ctx        context.Context
-	ApiService *OneAgentOnAHostAPIService
+	ApiService OneAgentOnAHostAPI
 }
 
 func (r ApiGetAgentPersistedPotentialProblemsRequest) Execute() (*AgentPotentialProblemsState, *http.Response, error) {
@@ -278,7 +320,7 @@ func (a *OneAgentOnAHostAPIService) GetAgentPersistedPotentialProblemsExecute(r 
 
 type ApiGetHostsWithSpecificAgentsRequest struct {
 	ctx                           context.Context
-	ApiService                    *OneAgentOnAHostAPIService
+	ApiService                    OneAgentOnAHostAPI
 	includeDetails                *bool
 	startTimestamp                *int64
 	endTimestamp                  *int64

@@ -20,12 +20,67 @@ import (
 	"strings"
 )
 
+type TopologySmartscapeProcessGroupAPI interface {
+
+	/*
+			GetProcessGroups Lists all process groups of your environment, along with their parameters
+
+			You can narrow down the output by specifying filtering parameters for the request.
+
+		You can additionally limit the output by using pagination:
+		1. Specify the number of results per page in the **pageSize** query parameter.
+		2. Then use the URL-encoded cursor from the **Next-Page-Key** response header in the **nextPageKey** query parameter to obtain subsequent pages.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@return ApiGetProcessGroupsRequest
+
+			Deprecated
+	*/
+	GetProcessGroups(ctx context.Context) ApiGetProcessGroupsRequest
+
+	// GetProcessGroupsExecute executes the request
+	//  @return []ProcessGroup
+	// Deprecated
+	GetProcessGroupsExecute(r ApiGetProcessGroupsRequest) ([]ProcessGroup, *http.Response, error)
+
+	/*
+		GetSingleProcessGroup List properties of the specified process group
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the required process group.
+		@return ApiGetSingleProcessGroupRequest
+
+		Deprecated
+	*/
+	GetSingleProcessGroup(ctx context.Context, meIdentifier string) ApiGetSingleProcessGroupRequest
+
+	// GetSingleProcessGroupExecute executes the request
+	//  @return ProcessGroup
+	// Deprecated
+	GetSingleProcessGroupExecute(r ApiGetSingleProcessGroupRequest) (*ProcessGroup, *http.Response, error)
+
+	/*
+		UpdateProcessGroup Updates properties of the specified process group
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param meIdentifier The Dynatrace entity ID of the process group to be updated.
+		@return ApiUpdateProcessGroupRequest
+
+		Deprecated
+	*/
+	UpdateProcessGroup(ctx context.Context, meIdentifier string) ApiUpdateProcessGroupRequest
+
+	// UpdateProcessGroupExecute executes the request
+	// Deprecated
+	UpdateProcessGroupExecute(r ApiUpdateProcessGroupRequest) (*http.Response, error)
+}
+
 // TopologySmartscapeProcessGroupAPIService TopologySmartscapeProcessGroupAPI service
 type TopologySmartscapeProcessGroupAPIService service
 
 type ApiGetProcessGroupsRequest struct {
 	ctx            context.Context
-	ApiService     *TopologySmartscapeProcessGroupAPIService
+	ApiService     TopologySmartscapeProcessGroupAPI
 	startTimestamp *int64
 	endTimestamp   *int64
 	relativeTime   *string
@@ -306,7 +361,7 @@ func (a *TopologySmartscapeProcessGroupAPIService) GetProcessGroupsExecute(r Api
 
 type ApiGetSingleProcessGroupRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeProcessGroupAPIService
+	ApiService   TopologySmartscapeProcessGroupAPI
 	meIdentifier string
 }
 
@@ -447,7 +502,7 @@ func (a *TopologySmartscapeProcessGroupAPIService) GetSingleProcessGroupExecute(
 
 type ApiUpdateProcessGroupRequest struct {
 	ctx          context.Context
-	ApiService   *TopologySmartscapeProcessGroupAPIService
+	ApiService   TopologySmartscapeProcessGroupAPI
 	meIdentifier string
 	updateEntity *UpdateEntity
 }
