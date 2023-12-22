@@ -20,12 +20,365 @@ import (
 	"strings"
 )
 
+type DeploymentAPI interface {
+
+	/*
+		DownloadAgentInstallerWithVersion Downloads OneAgent installer of the specified version
+
+		For the `paas` or `paas-sh` installer types you can get a configuring installer, by passing additional parameters.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@param installerType The type of the installer:   * `default`: Self-extracting installer for manual installation. Downloads an `.exe` file for Windows or an `.sh` file for Unix.  * `default-unattended`: Self-extracting installer for unattended installation. Windows only. Downloads a `.zip` archive, containing the `.msi` installer and the batch file. This option is deprecated with OneAgent version 1.173  * `mainframe`: Downloads all code modules for z/OS combined in a single `*.pax` archive.  * `paas`: Code modules installer. Downloads a `*.zip` archive, containing the `manifest.json` file with meta information or a `.jar` file for z/OS.  * `paas-sh`: Code modules installer. Downloads a self-extracting shell script with the embedded `tar.gz` archive.
+		@param version The required version of the OneAgent in `1.155.275.20181112-084458` format.   You can retrieve the list of available versions with the [**GET available versions of OneAgent**](https://dt-url.net/fo23rb5) call.
+		@return ApiDownloadAgentInstallerWithVersionRequest
+	*/
+	DownloadAgentInstallerWithVersion(ctx context.Context, osType string, installerType string, version string) ApiDownloadAgentInstallerWithVersionRequest
+
+	// DownloadAgentInstallerWithVersionExecute executes the request
+	DownloadAgentInstallerWithVersionExecute(r ApiDownloadAgentInstallerWithVersionRequest) (*http.Response, error)
+
+	/*
+		DownloadAgentOrchestrationSignatureWithVersion Downloads the requested version matching OneAgent deployment orchestration tarball's signature
+
+		Downloading the requested version matching deployment orchestration tarball's signature matching the requested Orchestration Type (ansible, puppet).
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param orchestrationType The Orchestration Type of the orchestration deployment script.
+		@param version The requested version of the OneAgent deployment orchestration tarball in `0.1.0.20200925-120822` format.
+		@return ApiDownloadAgentOrchestrationSignatureWithVersionRequest
+	*/
+	DownloadAgentOrchestrationSignatureWithVersion(ctx context.Context, orchestrationType string, version string) ApiDownloadAgentOrchestrationSignatureWithVersionRequest
+
+	// DownloadAgentOrchestrationSignatureWithVersionExecute executes the request
+	DownloadAgentOrchestrationSignatureWithVersionExecute(r ApiDownloadAgentOrchestrationSignatureWithVersionRequest) (*http.Response, error)
+
+	/*
+		DownloadAgentOrchestrationWithVersion Downloads the requested version matching OneAgent deployment orchestration tarball
+
+		Downloading the requested version matching deployment orchestration tarball matching the requested Orchestration Type (ansible, puppet).
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param orchestrationType The Orchestration Type of the orchestration deployment script.
+		@param version The requested version of the OneAgent orchestration deployment tarball in `0.1.0.20200925-120822` format.
+		@return ApiDownloadAgentOrchestrationWithVersionRequest
+	*/
+	DownloadAgentOrchestrationWithVersion(ctx context.Context, orchestrationType string, version string) ApiDownloadAgentOrchestrationWithVersionRequest
+
+	// DownloadAgentOrchestrationWithVersionExecute executes the request
+	DownloadAgentOrchestrationWithVersionExecute(r ApiDownloadAgentOrchestrationWithVersionRequest) (*http.Response, error)
+
+	/*
+		DownloadBoshReleaseWithVersion Downloads BOSH release tarballs of the specified version, OneAgent included
+
+		For SaaS, the call is executed on an Environment ActiveGate. Be sure to use the base of an ActiveGate, **not** the environment.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@param version The required version of the OneAgent in the `1.155.275.20181112-084458` format.   You can retrieve the list of available versions with the [**GET available versions of BOSH tarballs**](https://dt-url.net/j703kdn) call.
+		@return ApiDownloadBoshReleaseWithVersionRequest
+	*/
+	DownloadBoshReleaseWithVersion(ctx context.Context, osType string, version string) ApiDownloadBoshReleaseWithVersionRequest
+
+	// DownloadBoshReleaseWithVersionExecute executes the request
+	DownloadBoshReleaseWithVersionExecute(r ApiDownloadBoshReleaseWithVersionRequest) (*http.Response, error)
+
+	/*
+		DownloadGatewayInstallerWithVersion Downloads the ActiveGate installer of the specified version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@param version The required version of the ActiveGate installer, in `1.155.275.20181112-084458` format.   You can retrieve the list of available versions with the [**GET available versions of ActiveGate**](https://dt-url.net/kh43rha) call.
+		@return ApiDownloadGatewayInstallerWithVersionRequest
+	*/
+	DownloadGatewayInstallerWithVersion(ctx context.Context, osType string, version string) ApiDownloadGatewayInstallerWithVersionRequest
+
+	// DownloadGatewayInstallerWithVersionExecute executes the request
+	DownloadGatewayInstallerWithVersionExecute(r ApiDownloadGatewayInstallerWithVersionRequest) (*http.Response, error)
+
+	/*
+		DownloadLatestAgentInstaller Downloads the latest OneAgent installer
+
+		For the `paas` or `paas-sh` installer types you can get a configuring installer, by passing additional parameters.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@param installerType The type of the installer:   * `default`: Self-extracting installer for manual installation. Downloads an `.exe` file for Windows or an `.sh` file for Unix.  * `default-unattended`: Self-extracting installer for unattended installation. Windows only. Downloads a `.zip` archive, containing the `.msi` installer and the batch file. This option is deprecated with OneAgent version 1.173  * `mainframe`: Downloads all code modules for z/OS combined in a single `*.pax` archive.  * `paas`: Code modules installer. Downloads a `*.zip` archive, containing the `manifest.json` file with meta information or a `.jar` file for z/OS.  * `paas-sh`: Code modules installer. Downloads a self-extracting shell script with the embedded `tar.gz` archive.
+		@return ApiDownloadLatestAgentInstallerRequest
+	*/
+	DownloadLatestAgentInstaller(ctx context.Context, osType string, installerType string) ApiDownloadLatestAgentInstallerRequest
+
+	// DownloadLatestAgentInstallerExecute executes the request
+	DownloadLatestAgentInstallerExecute(r ApiDownloadLatestAgentInstallerRequest) (*http.Response, error)
+
+	/*
+		DownloadLatestAgentOrchestration Downloads the latest OneAgent deployment orchestration tarball
+
+		Downloading the latest available deployment orchestration script tarball matching the requested Orchestration Type (ansible, puppet).
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param orchestrationType The Orchestration Type of the orchestration deployment script.
+		@return ApiDownloadLatestAgentOrchestrationRequest
+	*/
+	DownloadLatestAgentOrchestration(ctx context.Context, orchestrationType string) ApiDownloadLatestAgentOrchestrationRequest
+
+	// DownloadLatestAgentOrchestrationExecute executes the request
+	DownloadLatestAgentOrchestrationExecute(r ApiDownloadLatestAgentOrchestrationRequest) (*http.Response, error)
+
+	/*
+		DownloadLatestAgentOrchestrationSignature Downloads the latest OneAgent deployment orchestration tarball's signature
+
+		Downloading the latest available deployment orchestration tarball's sigature matching the requested Orchestration Type (ansible, puppet).
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param orchestrationType The Orchestration Type of the orchestration deployment script.
+		@return ApiDownloadLatestAgentOrchestrationSignatureRequest
+	*/
+	DownloadLatestAgentOrchestrationSignature(ctx context.Context, orchestrationType string) ApiDownloadLatestAgentOrchestrationSignatureRequest
+
+	// DownloadLatestAgentOrchestrationSignatureExecute executes the request
+	DownloadLatestAgentOrchestrationSignatureExecute(r ApiDownloadLatestAgentOrchestrationSignatureRequest) (*http.Response, error)
+
+	/*
+		DownloadLatestGatewayInstaller Downloads the configured standard ActiveGate installer of the latest version for the specified OS
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@return ApiDownloadLatestGatewayInstallerRequest
+	*/
+	DownloadLatestGatewayInstaller(ctx context.Context, osType string) ApiDownloadLatestGatewayInstallerRequest
+
+	// DownloadLatestGatewayInstallerExecute executes the request
+	DownloadLatestGatewayInstallerExecute(r ApiDownloadLatestGatewayInstallerRequest) (*http.Response, error)
+
+	/*
+		GetActiveGateInstallerAvailableVersions Lists all available versions of ActiveGate installer
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@return ApiGetActiveGateInstallerAvailableVersionsRequest
+	*/
+	GetActiveGateInstallerAvailableVersions(ctx context.Context, osType string) ApiGetActiveGateInstallerAvailableVersionsRequest
+
+	// GetActiveGateInstallerAvailableVersionsExecute executes the request
+	//  @return ActiveGateInstallerVersions
+	GetActiveGateInstallerAvailableVersionsExecute(r ApiGetActiveGateInstallerAvailableVersionsRequest) (*ActiveGateInstallerVersions, *http.Response, error)
+
+	/*
+		GetActiveGateInstallerConnectionInfo Gets the connectivity information for Environment ActiveGate
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetActiveGateInstallerConnectionInfoRequest
+	*/
+	GetActiveGateInstallerConnectionInfo(ctx context.Context) ApiGetActiveGateInstallerConnectionInfoRequest
+
+	// GetActiveGateInstallerConnectionInfoExecute executes the request
+	//  @return ActiveGateConnectionInfo
+	GetActiveGateInstallerConnectionInfoExecute(r ApiGetActiveGateInstallerConnectionInfoRequest) (*ActiveGateConnectionInfo, *http.Response, error)
+
+	/*
+		GetAgentInstallerAvailableVersions Lists all available versions of OneAgent installer
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@param installerType The type of the installer:   * `default`: Self-extracting installer for manual installation. Downloads an `.exe` file for Windows or an `.sh` file for Unix.  * `default-unattended`: Self-extracting installer for unattended installation. Windows only. Downloads a `.zip` archive, containing the `.msi` installer and the batch file. This option is deprecated with OneAgent version 1.173  * `mainframe`: Downloads all code modules for z/OS combined in a single `*.pax` archive.  * `paas`: Code modules installer. Downloads a `*.zip` archive, containing the `manifest.json` file with meta information or a `.jar` file for z/OS.  * `paas-sh`: Code modules installer. Downloads a self-extracting shell script with the embedded `tar.gz` archive.
+		@return ApiGetAgentInstallerAvailableVersionsRequest
+	*/
+	GetAgentInstallerAvailableVersions(ctx context.Context, osType string, installerType string) ApiGetAgentInstallerAvailableVersionsRequest
+
+	// GetAgentInstallerAvailableVersionsExecute executes the request
+	//  @return AgentInstallerVersions
+	GetAgentInstallerAvailableVersionsExecute(r ApiGetAgentInstallerAvailableVersionsRequest) (*AgentInstallerVersions, *http.Response, error)
+
+	/*
+		GetAgentInstallerConnectionInfo Gets the connectivity information for OneAgent
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAgentInstallerConnectionInfoRequest
+	*/
+	GetAgentInstallerConnectionInfo(ctx context.Context) ApiGetAgentInstallerConnectionInfoRequest
+
+	// GetAgentInstallerConnectionInfoExecute executes the request
+	//  @return ConnectionInfo
+	GetAgentInstallerConnectionInfoExecute(r ApiGetAgentInstallerConnectionInfoRequest) (*ConnectionInfo, *http.Response, error)
+
+	/*
+		GetAgentInstallerConnectionInfoEndpoints Gets the list of the ActiveGate-Endpoints to be used for Agents ordered by networkzone-priorities.
+
+		Highest priority first, separated by a semicolon.If no network zone provided the default zone is used. Responds with 404 if network zone is not known.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAgentInstallerConnectionInfoEndpointsRequest
+	*/
+	GetAgentInstallerConnectionInfoEndpoints(ctx context.Context) ApiGetAgentInstallerConnectionInfoEndpointsRequest
+
+	// GetAgentInstallerConnectionInfoEndpointsExecute executes the request
+	GetAgentInstallerConnectionInfoEndpointsExecute(r ApiGetAgentInstallerConnectionInfoEndpointsRequest) (*http.Response, error)
+
+	/*
+			GetAgentInstallerMetaInfo Gets the latest available version of a OneAgent installer
+
+			If a [standard version](https://dt-url.net/ml03yye) is configured, then this is the downloaded version.
+
+		Non-required parameters are only applicable to the `paas` and `paas-sh` installer types.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param osType The operating system of the installer.
+			@param installerType The type of the installer:   * `default`: Self-extracting installer for manual installation. Downloads an `.exe` file for Windows or an `.sh` file for Unix.  * `default-unattended`: Self-extracting installer for unattended installation. Windows only. Downloads a `.zip` archive, containing the `.msi` installer and the batch file. This option is deprecated with OneAgent version 1.173  * `mainframe`: Downloads all code modules for z/OS combined in a single `*.pax` archive.  * `paas`: Code modules installer. Downloads a `*.zip` archive, containing the `manifest.json` file with meta information or a `.jar` file for z/OS.  * `paas-sh`: Code modules installer. Downloads a self-extracting shell script with the embedded `tar.gz` archive.
+			@return ApiGetAgentInstallerMetaInfoRequest
+	*/
+	GetAgentInstallerMetaInfo(ctx context.Context, osType string, installerType string) ApiGetAgentInstallerMetaInfoRequest
+
+	// GetAgentInstallerMetaInfoExecute executes the request
+	//  @return AgentInstallerMetaInfoDto
+	GetAgentInstallerMetaInfoExecute(r ApiGetAgentInstallerMetaInfoRequest) (*AgentInstallerMetaInfoDto, *http.Response, error)
+
+	/*
+			GetAgentInstallerWithVersionChecksum Gets the checksum of a non-customized OneAgent installer
+
+			The checksum is the sha256 hash of the installer file.
+
+		Compare this checksum only with a non-customized OneAgent installer.
+
+		To get a non-customized installer, set the **skipMetadata** query parameter of the download endpoint to `true`.
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param osType The operating system of the installer.
+			@param installerType The type of the installer.
+			@param version The required version of the OneAgent in `1.155.275.20181112-084458` format.   You can retrieve the list of available versions with the [**GET available versions of OneAgent**](https://dt-url.net/fo23rb5) call.
+			@return ApiGetAgentInstallerWithVersionChecksumRequest
+	*/
+	GetAgentInstallerWithVersionChecksum(ctx context.Context, osType string, installerType string, version string) ApiGetAgentInstallerWithVersionChecksumRequest
+
+	// GetAgentInstallerWithVersionChecksumExecute executes the request
+	//  @return OneAgentInstallerChecksum
+	GetAgentInstallerWithVersionChecksumExecute(r ApiGetAgentInstallerWithVersionChecksumRequest) (*OneAgentInstallerChecksum, *http.Response, error)
+
+	/*
+		GetAgentProcessModuleConfig Gets the latest process module config | maturity=EARLY_ADOPTER
+
+		Returns the latest process module config. Passing a previously gotten revision will first do a revision check, and return a 304 response if no changes were detected.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAgentProcessModuleConfigRequest
+	*/
+	GetAgentProcessModuleConfig(ctx context.Context) ApiGetAgentProcessModuleConfigRequest
+
+	// GetAgentProcessModuleConfigExecute executes the request
+	//  @return AgentProcessModuleConfigResponse
+	GetAgentProcessModuleConfigExecute(r ApiGetAgentProcessModuleConfigRequest) (*AgentProcessModuleConfigResponse, *http.Response, error)
+
+	/*
+		GetBoshReleaseAvailableVersions Gets the list of available OneAgent versions for BOSH release tarballs
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@return ApiGetBoshReleaseAvailableVersionsRequest
+	*/
+	GetBoshReleaseAvailableVersions(ctx context.Context, osType string) ApiGetBoshReleaseAvailableVersionsRequest
+
+	// GetBoshReleaseAvailableVersionsExecute executes the request
+	//  @return BoshReleaseAvailableVersions
+	GetBoshReleaseAvailableVersionsExecute(r ApiGetBoshReleaseAvailableVersionsRequest) (*BoshReleaseAvailableVersions, *http.Response, error)
+
+	/*
+			GetBoshReleaseChecksum Gets the checksum of the specified BOSH release tarball
+
+			The checksum is the sha256 hash of the installer file.
+
+		Result is not stable if **skipMetadata** is set to `false`.
+
+		For SaaS only works on environment ActiveGates version 1.176 or higher
+
+			@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+			@param osType The operating system of the installer.
+			@param version The required version of the OneAgent in the `1.155.275.20181112-084458` format.   You can retrieve the list of available versions with the [**GET available versions of BOSH tarballs**](https://dt-url.net/j703kdn) call.
+			@return ApiGetBoshReleaseChecksumRequest
+	*/
+	GetBoshReleaseChecksum(ctx context.Context, osType string, version string) ApiGetBoshReleaseChecksumRequest
+
+	// GetBoshReleaseChecksumExecute executes the request
+	//  @return BoshReleaseChecksum
+	GetBoshReleaseChecksumExecute(r ApiGetBoshReleaseChecksumRequest) (*BoshReleaseChecksum, *http.Response, error)
+
+	/*
+		GetGatewayInstallerMetaInfo Gets the latest available version of an ActiveGate installer
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param osType The operating system of the installer.
+		@return ApiGetGatewayInstallerMetaInfoRequest
+	*/
+	GetGatewayInstallerMetaInfo(ctx context.Context, osType string) ApiGetGatewayInstallerMetaInfoRequest
+
+	// GetGatewayInstallerMetaInfoExecute executes the request
+	//  @return GatewayInstallerMetaInfoDto
+	GetGatewayInstallerMetaInfoExecute(r ApiGetGatewayInstallerMetaInfoRequest) (*GatewayInstallerMetaInfoDto, *http.Response, error)
+
+	/*
+		GetLatestActiveGateImage Gets the latest available ActiveGate image
+
+		Returns the latest available ActiveGate image
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetLatestActiveGateImageRequest
+	*/
+	GetLatestActiveGateImage(ctx context.Context) ApiGetLatestActiveGateImageRequest
+
+	// GetLatestActiveGateImageExecute executes the request
+	//  @return ImageDto
+	GetLatestActiveGateImageExecute(r ApiGetLatestActiveGateImageRequest) (*ImageDto, *http.Response, error)
+
+	/*
+		GetLatestAgentImage Gets the latest available Agent image
+
+		Returns the latest available Agent image while considering default and minimal agent version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param agentImageType Agent Type
+		@return ApiGetLatestAgentImageRequest
+	*/
+	GetLatestAgentImage(ctx context.Context, agentImageType string) ApiGetLatestAgentImageRequest
+
+	// GetLatestAgentImageExecute executes the request
+	//  @return ImageDto
+	GetLatestAgentImageExecute(r ApiGetLatestAgentImageRequest) (*ImageDto, *http.Response, error)
+
+	/*
+		GetLatestLambdaBuildUnits Get the latest version names of the OneAgent for AWS Lambda
+
+		Get the latest version names of the OneAgent for the Java, Node.js, and Python AWS Lambda runtimes, also including names for layers that are combined with the log collector, as well as for the standalone log collector layer.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetLatestLambdaBuildUnitsRequest
+	*/
+	GetLatestLambdaBuildUnits(ctx context.Context) ApiGetLatestLambdaBuildUnitsRequest
+
+	// GetLatestLambdaBuildUnitsExecute executes the request
+	//  @return LatestLambdaLayerNames
+	GetLatestLambdaBuildUnitsExecute(r ApiGetLatestLambdaBuildUnitsRequest) (*LatestLambdaLayerNames, *http.Response, error)
+
+	/*
+		GetLatestSyntheticImage Gets the latest available Synthetic image for specified key | maturity=IN_DEVELOPMENT
+
+		Returns the latest available Synthetic image for specified key
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param imageKey
+		@return ApiGetLatestSyntheticImageRequest
+	*/
+	GetLatestSyntheticImage(ctx context.Context, imageKey string) ApiGetLatestSyntheticImageRequest
+
+	// GetLatestSyntheticImageExecute executes the request
+	//  @return ImageDto
+	GetLatestSyntheticImageExecute(r ApiGetLatestSyntheticImageRequest) (*ImageDto, *http.Response, error)
+}
+
 // DeploymentAPIService DeploymentAPI service
 type DeploymentAPIService service
 
 type ApiDownloadAgentInstallerWithVersionRequest struct {
 	ctx           context.Context
-	ApiService    *DeploymentAPIService
+	ApiService    DeploymentAPI
 	osType        string
 	installerType string
 	version       string
@@ -250,7 +603,7 @@ func (a *DeploymentAPIService) DownloadAgentInstallerWithVersionExecute(r ApiDow
 
 type ApiDownloadAgentOrchestrationSignatureWithVersionRequest struct {
 	ctx               context.Context
-	ApiService        *DeploymentAPIService
+	ApiService        DeploymentAPI
 	orchestrationType string
 	version           string
 }
@@ -381,7 +734,7 @@ func (a *DeploymentAPIService) DownloadAgentOrchestrationSignatureWithVersionExe
 
 type ApiDownloadAgentOrchestrationWithVersionRequest struct {
 	ctx               context.Context
-	ApiService        *DeploymentAPIService
+	ApiService        DeploymentAPI
 	orchestrationType string
 	version           string
 }
@@ -512,7 +865,7 @@ func (a *DeploymentAPIService) DownloadAgentOrchestrationWithVersionExecute(r Ap
 
 type ApiDownloadBoshReleaseWithVersionRequest struct {
 	ctx          context.Context
-	ApiService   *DeploymentAPIService
+	ApiService   DeploymentAPI
 	osType       string
 	version      string
 	skipMetadata *bool
@@ -666,7 +1019,7 @@ func (a *DeploymentAPIService) DownloadBoshReleaseWithVersionExecute(r ApiDownlo
 
 type ApiDownloadGatewayInstallerWithVersionRequest struct {
 	ctx         context.Context
-	ApiService  *DeploymentAPIService
+	ApiService  DeploymentAPI
 	osType      string
 	version     string
 	ifNoneMatch *string
@@ -828,7 +1181,7 @@ func (a *DeploymentAPIService) DownloadGatewayInstallerWithVersionExecute(r ApiD
 
 type ApiDownloadLatestAgentInstallerRequest struct {
 	ctx           context.Context
-	ApiService    *DeploymentAPIService
+	ApiService    DeploymentAPI
 	osType        string
 	installerType string
 	ifNoneMatch   *string
@@ -1049,7 +1402,7 @@ func (a *DeploymentAPIService) DownloadLatestAgentInstallerExecute(r ApiDownload
 
 type ApiDownloadLatestAgentOrchestrationRequest struct {
 	ctx               context.Context
-	ApiService        *DeploymentAPIService
+	ApiService        DeploymentAPI
 	orchestrationType string
 }
 
@@ -1176,7 +1529,7 @@ func (a *DeploymentAPIService) DownloadLatestAgentOrchestrationExecute(r ApiDown
 
 type ApiDownloadLatestAgentOrchestrationSignatureRequest struct {
 	ctx               context.Context
-	ApiService        *DeploymentAPIService
+	ApiService        DeploymentAPI
 	orchestrationType string
 }
 
@@ -1303,7 +1656,7 @@ func (a *DeploymentAPIService) DownloadLatestAgentOrchestrationSignatureExecute(
 
 type ApiDownloadLatestGatewayInstallerRequest struct {
 	ctx         context.Context
-	ApiService  *DeploymentAPIService
+	ApiService  DeploymentAPI
 	osType      string
 	ifNoneMatch *string
 	networkZone *string
@@ -1461,7 +1814,7 @@ func (a *DeploymentAPIService) DownloadLatestGatewayInstallerExecute(r ApiDownlo
 
 type ApiGetActiveGateInstallerAvailableVersionsRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 	osType     string
 	arch       *string
 }
@@ -1611,7 +1964,7 @@ func (a *DeploymentAPIService) GetActiveGateInstallerAvailableVersionsExecute(r 
 
 type ApiGetActiveGateInstallerConnectionInfoRequest struct {
 	ctx                 context.Context
-	ApiService          *DeploymentAPIService
+	ApiService          DeploymentAPI
 	networkZone         *string
 	defaultZoneFallback *bool
 }
@@ -1767,7 +2120,7 @@ func (a *DeploymentAPIService) GetActiveGateInstallerConnectionInfoExecute(r Api
 
 type ApiGetAgentInstallerAvailableVersionsRequest struct {
 	ctx           context.Context
-	ApiService    *DeploymentAPIService
+	ApiService    DeploymentAPI
 	osType        string
 	installerType string
 	flavor        *string
@@ -1934,7 +2287,7 @@ func (a *DeploymentAPIService) GetAgentInstallerAvailableVersionsExecute(r ApiGe
 
 type ApiGetAgentInstallerConnectionInfoRequest struct {
 	ctx                 context.Context
-	ApiService          *DeploymentAPIService
+	ApiService          DeploymentAPI
 	networkZone         *string
 	defaultZoneFallback *bool
 	version             *string
@@ -2100,7 +2453,7 @@ func (a *DeploymentAPIService) GetAgentInstallerConnectionInfoExecute(r ApiGetAg
 
 type ApiGetAgentInstallerConnectionInfoEndpointsRequest struct {
 	ctx                 context.Context
-	ApiService          *DeploymentAPIService
+	ApiService          DeploymentAPI
 	networkZone         *string
 	defaultZoneFallback *bool
 }
@@ -2245,7 +2598,7 @@ func (a *DeploymentAPIService) GetAgentInstallerConnectionInfoEndpointsExecute(r
 
 type ApiGetAgentInstallerMetaInfoRequest struct {
 	ctx           context.Context
-	ApiService    *DeploymentAPIService
+	ApiService    DeploymentAPI
 	osType        string
 	installerType string
 	flavor        *string
@@ -2429,7 +2782,7 @@ func (a *DeploymentAPIService) GetAgentInstallerMetaInfoExecute(r ApiGetAgentIns
 
 type ApiGetAgentInstallerWithVersionChecksumRequest struct {
 	ctx           context.Context
-	ApiService    *DeploymentAPIService
+	ApiService    DeploymentAPI
 	osType        string
 	installerType string
 	version       string
@@ -2657,7 +3010,7 @@ func (a *DeploymentAPIService) GetAgentInstallerWithVersionChecksumExecute(r Api
 
 type ApiGetAgentProcessModuleConfigRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 	revision   *int64
 	sections   *string
 	hostgroup  *string
@@ -2825,7 +3178,7 @@ func (a *DeploymentAPIService) GetAgentProcessModuleConfigExecute(r ApiGetAgentP
 
 type ApiGetBoshReleaseAvailableVersionsRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 	osType     string
 }
 
@@ -2962,7 +3315,7 @@ func (a *DeploymentAPIService) GetBoshReleaseAvailableVersionsExecute(r ApiGetBo
 
 type ApiGetBoshReleaseChecksumRequest struct {
 	ctx          context.Context
-	ApiService   *DeploymentAPIService
+	ApiService   DeploymentAPI
 	osType       string
 	version      string
 	skipMetadata *bool
@@ -3132,7 +3485,7 @@ func (a *DeploymentAPIService) GetBoshReleaseChecksumExecute(r ApiGetBoshRelease
 
 type ApiGetGatewayInstallerMetaInfoRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 	osType     string
 	arch       *string
 }
@@ -3282,7 +3635,7 @@ func (a *DeploymentAPIService) GetGatewayInstallerMetaInfoExecute(r ApiGetGatewa
 
 type ApiGetLatestActiveGateImageRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 }
 
 func (r ApiGetLatestActiveGateImageRequest) Execute() (*ImageDto, *http.Response, error) {
@@ -3417,7 +3770,7 @@ func (a *DeploymentAPIService) GetLatestActiveGateImageExecute(r ApiGetLatestAct
 
 type ApiGetLatestAgentImageRequest struct {
 	ctx            context.Context
-	ApiService     *DeploymentAPIService
+	ApiService     DeploymentAPI
 	agentImageType string
 }
 
@@ -3556,7 +3909,7 @@ func (a *DeploymentAPIService) GetLatestAgentImageExecute(r ApiGetLatestAgentIma
 
 type ApiGetLatestLambdaBuildUnitsRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 }
 
 func (r ApiGetLatestLambdaBuildUnitsRequest) Execute() (*LatestLambdaLayerNames, *http.Response, error) {
@@ -3691,7 +4044,7 @@ func (a *DeploymentAPIService) GetLatestLambdaBuildUnitsExecute(r ApiGetLatestLa
 
 type ApiGetLatestSyntheticImageRequest struct {
 	ctx        context.Context
-	ApiService *DeploymentAPIService
+	ApiService DeploymentAPI
 	imageKey   string
 }
 
