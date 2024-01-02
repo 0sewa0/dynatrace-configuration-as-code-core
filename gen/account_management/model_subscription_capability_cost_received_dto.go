@@ -11,6 +11,7 @@ API version: 1.0
 package accountmanagement
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -250,7 +251,7 @@ func (o SubscriptionCapabilityCostReceivedDto) ToMap() (map[string]interface{}, 
 	return toSerialize, nil
 }
 
-func (o *SubscriptionCapabilityCostReceivedDto) UnmarshalJSON(bytes []byte) (err error) {
+func (o *SubscriptionCapabilityCostReceivedDto) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -266,7 +267,7 @@ func (o *SubscriptionCapabilityCostReceivedDto) UnmarshalJSON(bytes []byte) (err
 
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err
@@ -280,7 +281,9 @@ func (o *SubscriptionCapabilityCostReceivedDto) UnmarshalJSON(bytes []byte) (err
 
 	varSubscriptionCapabilityCostReceivedDto := _SubscriptionCapabilityCostReceivedDto{}
 
-	err = json.Unmarshal(bytes, &varSubscriptionCapabilityCostReceivedDto)
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varSubscriptionCapabilityCostReceivedDto)
 
 	if err != nil {
 		return err

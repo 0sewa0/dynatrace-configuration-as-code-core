@@ -11,6 +11,7 @@ API version: 1.0
 package accountmanagement
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -137,7 +138,7 @@ func (o ExternalServiceUsersPageDto) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *ExternalServiceUsersPageDto) UnmarshalJSON(bytes []byte) (err error) {
+func (o *ExternalServiceUsersPageDto) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -149,7 +150,7 @@ func (o *ExternalServiceUsersPageDto) UnmarshalJSON(bytes []byte) (err error) {
 
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err
@@ -163,7 +164,9 @@ func (o *ExternalServiceUsersPageDto) UnmarshalJSON(bytes []byte) (err error) {
 
 	varExternalServiceUsersPageDto := _ExternalServiceUsersPageDto{}
 
-	err = json.Unmarshal(bytes, &varExternalServiceUsersPageDto)
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varExternalServiceUsersPageDto)
 
 	if err != nil {
 		return err

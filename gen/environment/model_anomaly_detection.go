@@ -11,6 +11,7 @@ API version: 1.0.0
 package environment
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -108,7 +109,7 @@ func (o AnomalyDetection) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *AnomalyDetection) UnmarshalJSON(bytes []byte) (err error) {
+func (o *AnomalyDetection) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -119,7 +120,7 @@ func (o *AnomalyDetection) UnmarshalJSON(bytes []byte) (err error) {
 
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err
@@ -133,7 +134,9 @@ func (o *AnomalyDetection) UnmarshalJSON(bytes []byte) (err error) {
 
 	varAnomalyDetection := _AnomalyDetection{}
 
-	err = json.Unmarshal(bytes, &varAnomalyDetection)
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAnomalyDetection)
 
 	if err != nil {
 		return err

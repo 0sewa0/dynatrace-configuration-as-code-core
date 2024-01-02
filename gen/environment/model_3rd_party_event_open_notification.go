@@ -11,6 +11,7 @@ API version: 1.0.0
 package environment
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -250,7 +251,7 @@ func (o Model3rdPartyEventOpenNotification) ToMap() (map[string]interface{}, err
 	return toSerialize, nil
 }
 
-func (o *Model3rdPartyEventOpenNotification) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Model3rdPartyEventOpenNotification) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -266,7 +267,7 @@ func (o *Model3rdPartyEventOpenNotification) UnmarshalJSON(bytes []byte) (err er
 
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err
@@ -280,7 +281,9 @@ func (o *Model3rdPartyEventOpenNotification) UnmarshalJSON(bytes []byte) (err er
 
 	varModel3rdPartyEventOpenNotification := _Model3rdPartyEventOpenNotification{}
 
-	err = json.Unmarshal(bytes, &varModel3rdPartyEventOpenNotification)
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varModel3rdPartyEventOpenNotification)
 
 	if err != nil {
 		return err

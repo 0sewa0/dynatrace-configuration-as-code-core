@@ -14,13 +14,15 @@ import (
 	envclient "github.com/dynatrace/dynatrace-configuration-as-code-core/gen/environment"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"net/http"
 	"testing"
 )
 
 func CreateDtClient(ctx context.Context, apiUrl, apiToken string) *envclient.APIClient {
 	tokenKey := "Api-Token"
 	configuration := envclient.NewConfiguration()
-	configuration.Servers = envclient.ServerConfigurations{{URL: apiUrl}}
+	configuration.Servers = envclient.ServerConfigurations{{URL: apiUrl}} // You can(/have-to) override the server URL here, as the schema has a URL in it already.
+	configuration.HTTPClient = http.DefaultClient                         // You can mess with the http-client here, customize it as you like
 	apiClient := envclient.NewAPIClient(configuration)
 	ctx = context.WithValue(ctx, envclient.ContextAPIKeys, map[string]envclient.APIKey{
 		tokenKey: {
@@ -32,7 +34,7 @@ func CreateDtClient(ctx context.Context, apiUrl, apiToken string) *envclient.API
 }
 
 func Test_environment_DeploymentAPIService(t *testing.T) {
-	url := "https://zib50933.dev.dynatracelabs.com/api/v1"
+	url := "https://test.dev.dynatracelabs.com/api/v1"
 	token := "asd"
 	ctx := context.Background()
 	apiClient := CreateDtClient(ctx, url, token)

@@ -11,6 +11,7 @@ API version: 1.0.0
 package environment
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -240,7 +241,7 @@ func (o Model3rdPartySyntheticTests) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *Model3rdPartySyntheticTests) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Model3rdPartySyntheticTests) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -253,7 +254,7 @@ func (o *Model3rdPartySyntheticTests) UnmarshalJSON(bytes []byte) (err error) {
 
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err
@@ -267,7 +268,9 @@ func (o *Model3rdPartySyntheticTests) UnmarshalJSON(bytes []byte) (err error) {
 
 	varModel3rdPartySyntheticTests := _Model3rdPartySyntheticTests{}
 
-	err = json.Unmarshal(bytes, &varModel3rdPartySyntheticTests)
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varModel3rdPartySyntheticTests)
 
 	if err != nil {
 		return err

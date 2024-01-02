@@ -6,7 +6,7 @@
         "version" : "1.0.0"
     },
     "servers" : [ {
-        "url" : "https://zib50933.dev.dynatracelabs.com/api/v1",
+        "url" : "https://test.dev.dynatracelabs.com/api/v1",
         "variables" : { }
     } ],
     "tags" : [ {

@@ -92,7 +92,7 @@ func NewConfiguration() *Configuration {
 		Debug:         false,
 		Servers: ServerConfigurations{
 			{
-				URL:         "https://zib50933.dev.dynatracelabs.com/api/v1",
+				URL:         "https://test.dev.dynatracelabs.com/api/v1",
 				Description: "No description provided",
 			},
 		},
