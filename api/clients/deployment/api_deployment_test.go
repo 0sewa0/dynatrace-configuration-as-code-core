@@ -11,7 +11,7 @@ package deployment
 
 import (
 	"context"
-	envclient "github.com/dynatrace/dynatrace-configuration-as-code-core/gen/environment"
+	envclient "github.com/0sewa0/dynatrace-configuration-as-code-core/gen/environment"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"net/http"
@@ -41,14 +41,12 @@ func Test_environment_DeploymentAPIService(t *testing.T) {
 
 	t.Run("Test DeploymentAPIService DownloadAgentInstallerWithVersion", func(t *testing.T) {
 
-		t.Skip("skip test") // remove to run test
+		//t.Skip("skip test") // remove to run test
 
-		var osType string
-		var installerType string
-		var version string
+		file, httpRes, err := apiClient.DeploymentAPI.DownloadAgentInstallerWithVersion(context.Background(), "unix", "paas", "1.284.0.20240104-081422").Flavor("default").SkipMetadata(true).Arch("all").Bitness("all").Execute()
 
-		httpRes, err := apiClient.DeploymentAPI.DownloadAgentInstallerWithVersion(context.Background(), osType, installerType, version).Execute()
-
+		stat, err := file.Stat()
+		assert.NotNil(t, stat)
 		require.Nil(t, err)
 		assert.Equal(t, 200, httpRes.StatusCode)
 
